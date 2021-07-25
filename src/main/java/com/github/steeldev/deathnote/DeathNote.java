@@ -3,7 +3,10 @@ package com.github.steeldev.deathnote;
 import com.github.steeldev.deathnote.listeners.DeathNoteListener;
 import com.github.steeldev.deathnote.managers.DeathNoteItemManager;
 import com.github.steeldev.deathnote.managers.PluginAfflictionManager;
-import com.github.steeldev.deathnote.util.*;
+import com.github.steeldev.deathnote.util.DNLogger;
+import com.github.steeldev.deathnote.util.Message;
+import com.github.steeldev.deathnote.util.UpdateChecker;
+import com.github.steeldev.deathnote.util.Util;
 import com.github.steeldev.deathnote.util.config.Config;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
@@ -52,8 +55,6 @@ public class DeathNote extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-
-        loadNBTAPI();
 
         loadConfigurations();
 

@@ -1,8 +1,6 @@
 package com.github.steeldev.deathnote.util.config;
 
 import com.github.steeldev.deathnote.DeathNote;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -10,9 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Config {
     private final DeathNote plugin;

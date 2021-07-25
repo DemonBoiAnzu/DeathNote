@@ -15,9 +15,9 @@ public class PluginAfflictionManager {
 
     public Affliction defaultAffliction;
 
-    public void registerDefaultAfflictions(){
-        if(afflictionMap == null) afflictionMap = new HashMap<>();
-        if(afflicted == null) afflicted = new ArrayList<>();
+    public void registerDefaultAfflictions() {
+        if (afflictionMap == null) afflictionMap = new HashMap<>();
+        if (afflicted == null) afflicted = new ArrayList<>();
 
         Affliction heartAttack = new Affliction("heart_attack", "&cHeart Attack", Arrays.asList("heart attack", "sudden death"), new AffHeartAttack());
         heartAttack.setDeathMessage("%s had a heart attack");

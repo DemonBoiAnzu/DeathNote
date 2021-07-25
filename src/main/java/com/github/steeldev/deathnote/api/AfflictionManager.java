@@ -1,30 +1,28 @@
 package com.github.steeldev.deathnote.api;
 
-import com.github.steeldev.deathnote.util.Util;
-import com.github.steeldev.monstrorvm.util.pluginutils.Message;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import static com.github.steeldev.deathnote.util.Util.getMain;
 
 public class AfflictionManager {
-    public static void registerAffliction(Affliction affliction){
-        registerAffliction(affliction,getMain());
+    public static void registerAffliction(Affliction affliction) {
+        registerAffliction(affliction, getMain());
     }
 
-    public static void registerAffliction(Affliction affliction, Plugin source){
-        if(getMain().afflictionManager.afflictionMap == null) getMain().afflictionManager.afflictionMap = new HashMap<>();
+    public static void registerAffliction(Affliction affliction, Plugin source) {
+        if (getMain().afflictionManager.afflictionMap == null)
+            getMain().afflictionManager.afflictionMap = new HashMap<>();
         affliction.setRegisteredBy(source);
 
-        if(getMain().afflictionManager.afflictionMap.containsKey(affliction.getId())){
-            if(!updateAffliction(affliction)) return;
-        }else{
-            getMain().afflictionManager.afflictionMap.put(affliction.getId(),affliction);
+        if (getMain().afflictionManager.afflictionMap.containsKey(affliction.getId())) {
+            if (!updateAffliction(affliction)) return;
+        } else {
+            getMain().afflictionManager.afflictionMap.put(affliction.getId(), affliction);
         }
         // Message
     }
@@ -40,15 +38,15 @@ public class AfflictionManager {
         return true;
     }
 
-    public static Affliction getAffliction(String key){
+    public static Affliction getAffliction(String key) {
         if (!getMain().afflictionManager.afflictionMap.containsKey(key)) return null;
 
         return getMain().afflictionManager.afflictionMap.get(key);
     }
 
-    public static Affliction getAfflictedByTriggerWord(String trigger){
-        for(Affliction affliction : getMain().afflictionManager.afflictionMap.values()){
-            if(affliction.getTriggers().contains(trigger))
+    public static Affliction getAfflictionByTriggerWord(String trigger) {
+        for (Affliction affliction : getMain().afflictionManager.afflictionMap.values()) {
+            if (affliction.getTriggers().contains(trigger))
                 return affliction;
         }
         return null;
@@ -59,17 +57,17 @@ public class AfflictionManager {
         return new ArrayList<>(getMain().afflictionManager.afflictionMap.keySet());
     }
 
-    public static void setAfflicted(Player player, boolean aff){
-        if(aff) {
+    public static void setAfflicted(Player player, boolean aff) {
+        if (aff) {
             if (!getMain().afflictionManager.afflicted.contains(player))
                 getMain().afflictionManager.afflicted.add(player);
-        }else{
+        } else {
             if (getMain().afflictionManager.afflicted.contains(player))
                 getMain().afflictionManager.afflicted.remove(player);
         }
     }
 
-    public static boolean isAfflicted(Player player){
+    public static boolean isAfflicted(Player player) {
         return getMain().afflictionManager.afflicted.contains(player);
     }
 }

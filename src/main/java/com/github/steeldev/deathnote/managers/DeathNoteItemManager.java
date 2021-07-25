@@ -43,33 +43,34 @@ public class DeathNoteItemManager {
     };
 
 
-    public void createDeathNoteItem(){
-        if(Util.monstrorvmEnabled()){
+    public void createDeathNoteItem() {
+        if (Util.monstrorvmEnabled()) {
             MVItem deathNote = new MVItem(deathNoteID, Material.WRITABLE_BOOK);
             deathNote.withDisplayName(deathNoteDisplayName);
             deathNote.lore = deathNoteLore;
             deathNote.withCustomModelData(1);
-            ItemManager.registerNewItem(deathNote,getMain());
-        }else{
+            ItemManager.registerNewItem(deathNote, getMain());
+        } else {
+            getMain().loadNBTAPI();
             ItemStack deathNote = new ItemStack(Material.WRITABLE_BOOK);
             ItemMeta meta = Bukkit.getItemFactory().getItemMeta(deathNote.getType());
             meta.setLore(deathNoteLore);
             meta.setDisplayName(deathNoteDisplayName);
             deathNote.setItemMeta(meta);
             NBTItem deathNoteNBT = new NBTItem(deathNote);
-            deathNoteNBT.setBoolean(deathNoteID,true);
+            deathNoteNBT.setBoolean(deathNoteID, true);
             deathNoteItem = deathNoteNBT.getItem();
         }
     }
 
-    public ItemStack getDeathNoteItem(){
-        if(Util.monstrorvmEnabled()) return ItemManager.getItem(deathNoteID).getItemStack();
+    public ItemStack getDeathNoteItem() {
+        if (Util.monstrorvmEnabled()) return ItemManager.getItem(deathNoteID).getItemStack();
         else return deathNoteItem;
     }
 
-    public boolean isDeathNote(ItemStack item){
-        if(Util.monstrorvmEnabled()) return ItemManager.isMVItem(item,deathNoteID);
-        else{
+    public boolean isDeathNote(ItemStack item) {
+        if (Util.monstrorvmEnabled()) return ItemManager.isMVItem(item, deathNoteID);
+        else {
             NBTItem nbtItem = new NBTItem(item);
             return nbtItem.hasKey(deathNoteID);
         }

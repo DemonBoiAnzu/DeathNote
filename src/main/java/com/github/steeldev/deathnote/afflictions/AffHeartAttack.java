@@ -6,6 +6,6 @@ import org.bukkit.entity.Player;
 public class AffHeartAttack implements AfflictionAction {
     @Override
     public void execute(Player target) {
-        target.damage(target.getHealth()+100);
+        target.damage(target.getHealth() + 100);
     }
 }

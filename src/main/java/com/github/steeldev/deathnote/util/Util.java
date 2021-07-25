@@ -4,17 +4,12 @@ import com.github.steeldev.deathnote.DeathNote;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -24,8 +19,8 @@ import static net.md_5.bungee.api.chat.TextComponent.fromLegacyText;
 
 public class Util {
     private static final Pattern HEX_PATTERN = Pattern.compile("<#([A-Fa-f0-9]){6}>");
-    private static final String PREFIX = "&7[&6Better&cNetherite&7] ";
-    private static final String NBTAPI_PREFIX = "&7[&6NBT&cAPI&7]";
+    private static final String PREFIX = "&8[&7DeathNote&8]";
+    private static final String NBTAPI_PREFIX = "&8[&7NBTAPI&8]";
     public static Random rand = new Random();
     public static String[] version;
     static DeathNote main;
@@ -105,7 +100,7 @@ public class Util {
         main.getCommand(command).setExecutor(commandExecutor);
     }
 
-    public static boolean monstrorvmEnabled(){
+    public static boolean monstrorvmEnabled() {
         return getMain().monstrorvmPlugin != null && getMain().monstrorvmPlugin.isEnabled();
     }
 
