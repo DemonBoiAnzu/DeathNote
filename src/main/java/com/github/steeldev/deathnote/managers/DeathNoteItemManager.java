@@ -56,6 +56,7 @@ public class DeathNoteItemManager {
             ItemMeta meta = Bukkit.getItemFactory().getItemMeta(deathNote.getType());
             meta.setLore(deathNoteLore);
             meta.setDisplayName(deathNoteDisplayName);
+            meta.setCustomModelData(1);
             deathNote.setItemMeta(meta);
             NBTItem deathNoteNBT = new NBTItem(deathNote);
             deathNoteNBT.setBoolean(deathNoteID, true);
