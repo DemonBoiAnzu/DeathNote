@@ -2,6 +2,7 @@ package com.github.steeldev.deathnote.api;
 
 import com.github.steeldev.deathnote.util.Util;
 import com.github.steeldev.monstrorvm.util.pluginutils.Message;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -56,5 +57,19 @@ public class AfflictionManager {
     public static List<String> getAfflictionList() {
         if (getMain().afflictionManager.afflictionMap == null) return new ArrayList<>();
         return new ArrayList<>(getMain().afflictionManager.afflictionMap.keySet());
+    }
+
+    public static void setAfflicted(Player player, boolean aff){
+        if(aff) {
+            if (!getMain().afflictionManager.afflicted.contains(player))
+                getMain().afflictionManager.afflicted.add(player);
+        }else{
+            if (getMain().afflictionManager.afflicted.contains(player))
+                getMain().afflictionManager.afflicted.remove(player);
+        }
+    }
+
+    public static boolean isAfflicted(Player player){
+        return getMain().afflictionManager.afflicted.contains(player);
     }
 }

@@ -12,12 +12,15 @@ import static com.github.steeldev.deathnote.util.Util.getMain;
 
 public class Affliction {
     private final String id;
+    private final String display;
+    private String deathMessage;
     private final List<String> triggers;
     private final AfflictionAction afflictionAction;
     private Plugin registeredBy;
 
-    public Affliction(String id, List<String> triggers, AfflictionAction afflictionAction){
+    public Affliction(String id, String display, List<String> triggers, AfflictionAction afflictionAction){
         this.id = id;
+        this.display = display;
         this.triggers = triggers;
         this.afflictionAction = afflictionAction;
     }
@@ -36,6 +39,18 @@ public class Affliction {
 
     public Plugin getRegisteredBy() {
         return registeredBy;
+    }
+
+    public String getDisplay() {
+        return display;
+    }
+
+    public void setDeathMessage(String deathMessage) {
+        this.deathMessage = deathMessage;
+    }
+
+    public String getDeathMessage() {
+        return deathMessage;
     }
 
     public void setRegisteredBy(Plugin registeredBy) {
