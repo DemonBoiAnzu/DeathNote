@@ -1,0 +1,13 @@
+# Set a custom prefix
+Prefix: '&7DeathNote &8» '
+
+# Enable debug messages?
+#  WARNING: WILL cause spam in console! this is
+#   a development option, put here for ease of development.
+Debug: false
+
+UpdateCheck:
+  # Should the plugin notify OPs/Players with the plugins admin perm
+  #  when a new update is available when they join/reload the plugin?
+  MessageOnJoin: true
+  MessageOnReload: true
