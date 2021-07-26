@@ -1,37 +1,40 @@
 package com.github.steeldev.deathnote;
 
+import com.github.steeldev.deathnote.commands.DeathNoteCommands;
 import com.github.steeldev.deathnote.listeners.DeathNoteListener;
-import com.github.steeldev.deathnote.managers.DeathNoteItemManager;
-import com.github.steeldev.deathnote.managers.PluginAfflictionManager;
+import com.github.steeldev.deathnote.managers.PluginAfflictions;
 import com.github.steeldev.deathnote.util.DNLogger;
 import com.github.steeldev.deathnote.util.Message;
 import com.github.steeldev.deathnote.util.UpdateChecker;
 import com.github.steeldev.deathnote.util.Util;
 import com.github.steeldev.deathnote.util.config.Config;
+import com.github.steeldev.monstrorvm.api.items.ItemManager;
+import com.github.steeldev.monstrorvm.api.items.MVItem;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
+import static com.github.steeldev.deathnote.util.Util.*;
 import static org.bukkit.Bukkit.getPluginManager;
 
 public class DeathNote extends JavaPlugin {
     private static DeathNote instance;
     public Config config = null;
     public UpdateChecker versionManager;
-
     public Plugin monstrorvmPlugin;
-
     public Logger logger;
-
-    public DeathNoteItemManager deathNoteItemManager;
-    public PluginAfflictionManager afflictionManager;
+    ItemStack deathNoteItem;
 
     public static DeathNote getInstance() {
         return instance;
@@ -71,18 +74,15 @@ public class DeathNote extends JavaPlugin {
         } else
             Message.MONSTRORVM_NOT_FOUND.log();
 
-        deathNoteItemManager = new DeathNoteItemManager();
-        deathNoteItemManager.createDeathNoteItem();
+        createDeathNoteItem();
+        PluginAfflictions.registerPluginAfflictions();
 
-        afflictionManager = new PluginAfflictionManager();
-        afflictionManager.registerDefaultAfflictions();
-
-        enableMetrics();
+        //enableMetrics();
 
         Message.PLUGIN_ENABLED.log(getDescription().getVersion(), (float) (System.currentTimeMillis() - start) / 1000);
 
-        versionManager = new UpdateChecker(this, 0);
-        versionManager.checkForNewVersion();
+        //versionManager = new UpdateChecker(this, 0);
+        //versionManager.checkForNewVersion();
     }
 
     public Plugin loadMonstrorvm() {
@@ -107,6 +107,36 @@ public class DeathNote extends JavaPlugin {
         config = new Config(this);
     }
 
+    void createDeathNoteItem() {
+        if (Util.monstrorvmEnabled()) {
+            MVItem deathNote = new MVItem(deathNoteID, Material.WRITABLE_BOOK);
+            deathNote.withDisplayName(deathNoteDisplayName);
+            deathNote.lore = deathNoteLore;
+            deathNote.withCustomModelData(1);
+            ItemManager.registerNewItem(deathNote, getMain());
+        } else {
+            getMain().loadNBTAPI();
+            ItemStack deathNote = new ItemStack(Material.WRITABLE_BOOK);
+            ItemMeta meta = Bukkit.getItemFactory().getItemMeta(deathNote.getType());
+            List<String> lore = new ArrayList<>();
+            for (String line : deathNoteLore) {
+                lore.add(colorize(line));
+            }
+            meta.setLore(lore);
+            meta.setDisplayName(colorize(deathNoteDisplayName));
+            meta.setCustomModelData(1);
+            deathNote.setItemMeta(meta);
+            NBTItem deathNoteNBT = new NBTItem(deathNote);
+            deathNoteNBT.setBoolean(deathNoteID, true);
+            deathNoteItem = deathNoteNBT.getItem();
+        }
+    }
+
+    public ItemStack getDeathNoteItem() {
+        if (Util.monstrorvmEnabled()) return ItemManager.getItem(deathNoteID).getItemStack();
+        else return deathNoteItem;
+    }
+
     public void enableMetrics() {
         Metrics metrics = new Metrics(this, 0);
 
@@ -123,7 +153,7 @@ public class DeathNote extends JavaPlugin {
     }
 
     public void registerCommands() {
-
+        Util.registerCommand("deathnote", new DeathNoteCommands());
     }
 
     public void registerEvents() {

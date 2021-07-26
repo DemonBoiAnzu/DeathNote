@@ -4,40 +4,29 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Affliction {
-    private final String id;
     private final String display;
     private final List<String> triggers;
-    private final AfflictionAction afflictionAction;
-    private String deathMessage;
-    private Plugin registeredBy;
+    private final Consumer<Player> afflictionAction;
+    private final String deathMessage;
+    private final Plugin registeredBy;
 
-    public Affliction(String id, String display, List<String> triggers, AfflictionAction afflictionAction) {
-        this.id = id;
+    public Affliction(String display, List<String> triggers, String deathMessage, Plugin registeredBy, Consumer<Player> afflictionAction) {
         this.display = display;
         this.triggers = triggers;
+        this.deathMessage = deathMessage;
         this.afflictionAction = afflictionAction;
-    }
-
-    public String getId() {
-        return id;
+        this.registeredBy = registeredBy;
     }
 
     public List<String> getTriggers() {
         return triggers;
     }
 
-    public AfflictionAction getAfflictionAction() {
-        return afflictionAction;
-    }
-
     public Plugin getRegisteredBy() {
         return registeredBy;
-    }
-
-    public void setRegisteredBy(Plugin registeredBy) {
-        this.registeredBy = registeredBy;
     }
 
     public String getDisplay() {
@@ -48,11 +37,7 @@ public class Affliction {
         return deathMessage;
     }
 
-    public void setDeathMessage(String deathMessage) {
-        this.deathMessage = deathMessage;
-    }
-
     public void execute(Player target) {
-        afflictionAction.execute(target);
+        afflictionAction.accept(target);
     }
 }

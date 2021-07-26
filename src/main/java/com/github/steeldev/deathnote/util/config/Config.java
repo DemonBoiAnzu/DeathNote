@@ -17,6 +17,10 @@ public class Config {
     public boolean NEW_UPDATE_MESSAGE_ON_JOIN;
     public boolean NEW_UPDATE_MESSAGE_ON_RELOAD;
 
+    public boolean EXPLOSION_AFFLICTION_ENABLED;
+    public boolean LIGHTNING_AFFLICTION_ENABLED;
+    public boolean FIRE_AFFLICTION_ENABLED;
+
 
     private FileConfiguration config;
     private File configFile;
@@ -83,5 +87,9 @@ public class Config {
         DEBUG = config.getBoolean("Debug");
         NEW_UPDATE_MESSAGE_ON_JOIN = config.getBoolean("UpdateCheck.MessageOnJoin");
         NEW_UPDATE_MESSAGE_ON_RELOAD = config.getBoolean("UpdateCheck.MessageOnReload");
+
+        EXPLOSION_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Explosion");
+        LIGHTNING_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Lightning");
+        FIRE_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Fire");
     }
 }

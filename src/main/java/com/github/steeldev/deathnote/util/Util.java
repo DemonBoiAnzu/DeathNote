@@ -1,17 +1,22 @@
 package com.github.steeldev.deathnote.util;
 
 import com.github.steeldev.deathnote.DeathNote;
+import com.github.steeldev.deathnote.api.Affliction;
+import com.github.steeldev.monstrorvm.api.items.ItemManager;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,11 +24,31 @@ import static net.md_5.bungee.api.chat.TextComponent.fromLegacyText;
 
 public class Util {
     private static final Pattern HEX_PATTERN = Pattern.compile("<#([A-Fa-f0-9]){6}>");
-    private static final String PREFIX = "&8[&7DeathNote&8]";
-    private static final String NBTAPI_PREFIX = "&8[&7NBTAPI&8]";
+    private static final String PREFIX = "&7[&8DeathNote&7]&r ";
+    private static final String NBTAPI_PREFIX = "&7[&8NBTAPI&7]&r ";
     public static Random rand = new Random();
     public static String[] version;
-    static DeathNote main;
+    public static String deathNoteID = "death_note";
+    public static String deathNoteDisplayName = "<#443c3c>Death Note";
+    public static List<String> deathNoteLore = new ArrayList<String>() {
+        {
+            add("&7The humans whose name");
+            add("&7is written in this note shall die.");
+            add("");
+            add("&7No cause given, they will simply die");
+            add("&7of a heart attack.");
+            add("");
+            add("&7Give a cause by adding 'by' then");
+            add("&7a cause of death.");
+            add("");
+            add("&7Additionally, you can provide a time");
+            add("&7of death as well, by putting 'in'");
+            add("&7followed by a timespan");
+            add("&7&oe.g 10 minutes");
+        }
+    };
+    static DeathNote main = DeathNote.getInstance();
+    static Map<Player, Affliction> afflicted = new HashMap<>();
 
     public static DeathNote getMain() {
         if (main == null) main = DeathNote.getInstance();
@@ -85,7 +110,7 @@ public class Util {
     }
 
     public static void broadcast(String format, Object... params) {
-        Bukkit.getServer().broadcastMessage(colorize(String.format(format, params)));
+        getMain().getServer().broadcastMessage(colorize(String.format(format, params)));
     }
 
     public static void unregisterEvents(Listener listener) {
@@ -93,15 +118,37 @@ public class Util {
     }
 
     public static void registerEvent(Listener listener) {
-        main.getServer().getPluginManager().registerEvents(listener, main);
+        getMain().getServer().getPluginManager().registerEvents(listener, main);
     }
 
     public static void registerCommand(String command, CommandExecutor commandExecutor) {
-        main.getCommand(command).setExecutor(commandExecutor);
+        getMain().getCommand(command).setExecutor(commandExecutor);
     }
 
     public static boolean monstrorvmEnabled() {
         return getMain().monstrorvmPlugin != null && getMain().monstrorvmPlugin.isEnabled();
+    }
+
+    public static boolean isAfflicted(Player player) {
+        return afflicted.containsKey(player);
+    }
+
+    public static void setAfflicted(Player player, Affliction affliction) {
+        if (affliction != null) afflicted.put(player, affliction);
+        else afflicted.remove(player);
+    }
+
+    public static Affliction getPlayerAffliction(Player player) {
+        return afflicted.get(player);
+    }
+
+    public static boolean isDeathNote(ItemStack item) {
+        if (!item.getType().equals(Material.WRITABLE_BOOK)) return false;
+        if (Util.monstrorvmEnabled()) return ItemManager.isMVItem(item, deathNoteID);
+        else {
+            NBTItem nbtItem = new NBTItem(item);
+            return nbtItem.hasKey(deathNoteID);
+        }
     }
 
     // Thanks to ShaneBee for providing these functions

@@ -4,36 +4,54 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ResourceBundle;
+
 public class Message {
     // Messages
 
-    public static final Message MONSTRORVM_FOUND = get("&aFound &2Monstrorvm %s&a! Using custom item for the Death Note!");
-    public static final Message MONSTRORVM_FOUND_DISABLED = get("&cFound &2Monstrorvm %s, but its disabled! Using basic custom item for the Death Note!");
-    public static final Message MONSTRORVM_NOT_FOUND = get("&cCould not find &2Monstrorvm &con the server! Using basic custom item for the Death Note!");
+    static final ResourceBundle messageBundle = ResourceBundle.getBundle("Messages");
 
-    public static final Message PLUGIN_ENABLED = get("&aSuccessfully enabled &2%s &ain &e%s Seconds&a.");
-    public static final Message PLUGIN_DISABLED = get("&cSuccessfully disabled!");
+    public static final Message MONSTRORVM_FOUND = get("found_monstrorvm");
+    public static final Message MONSTRORVM_FOUND_DISABLED = get("found_monstrorvm_disabled");
+    public static final Message MONSTRORVM_NOT_FOUND = get("cant_find_monstrorvm");
 
-    public static final Message PLUGIN_CHECKING_FOR_UPDATE = get("&e&oChecking for a new version...");
-    public static final Message PLUGIN_ON_LATEST = get("&2&oYou are on the latest version! &7&o(%s)");
-    public static final Message PLUGIN_ON_IN_DEV_PREVIEW = get("&e&oYou are on an in-dev preview version! &7&o(%s)");
-    public static final Message PLUGIN_NEW_VERSION_AVAILABLE_CONSOLE = get("&a&oA new version is available! &7&o(Current: %s, Latest: %s) &a&oYou can download the latest version here: &e&o%s");
-    public static final Message PLUGIN_NEW_VERSION_AVAILABLE_CHAT = get("&a&oA new version is available! &7&o(Current: %s, Latest: %s)");
-    public static final Message PLUGIN_NEW_VERSION_AVAILABLE_CHAT_CLICK = get("&6&lClick here to update");
-    public static final Message PLUGIN_UPDATE_CHECK_FAILED = get("&4Failed to check for updates: &c%s");
+    public static final Message PLUGIN_ENABLED = get("plugin_enabled");
+    public static final Message PLUGIN_DISABLED = get("plugin_disabled");
 
-    public static final Message PLUGIN_RELOADED = get("&aSuccessfully reloaded all configurations!");
+    public static final Message PLUGIN_CHECKING_FOR_UPDATE = get("version_checking");
+    public static final Message PLUGIN_ON_LATEST = get("on_latest");
+    public static final Message PLUGIN_ON_IN_DEV_PREVIEW = get("preview_version");
+    public static final Message PLUGIN_NEW_VERSION_AVAILABLE_CONSOLE = get("version_available_console");
+    public static final Message PLUGIN_NEW_VERSION_AVAILABLE_CHAT = get("version_available_chat");
+    public static final Message PLUGIN_NEW_VERSION_AVAILABLE_CHAT_CLICK = get("version_chat_click");
+    public static final Message PLUGIN_UPDATE_CHECK_FAILED = get("version_check_failed");
 
-    public static final Message LOADING_NBT_API = get("&aLoading NBT-API...");
-    public static final Message NBT_API_LOADED = get("&aSuccessfully loaded NBT-API!");
+    public static final Message PLUGIN_RELOADED = get("plugin_reloaded");
 
-    public static final Message STARTING_METRICS = get("&7Starting Metrics. Opt-out using the global bStats config.");
+    public static final Message LOADING_NBT_API = get("loading_nbt");
+    public static final Message NBT_API_LOADED = get("loaded_nbt");
 
-    public static final Message TARGET_INVALID = get("&rCould not find the specified target: &7%s&r.");
-    public static final Message TARGET_WILL_BE_AFFLICTED = get("&rYour target, &7%s&r, will be afflicted.");
-    public static final Message TARGET_WILL_BE_AFFLICTED_BY = get("&rYour target, &7%s&r, will be afflicted by &e%s&r.");
-    public static final Message INPUTTED_AFFLICTION_INVALID = get("&rThe specified affliction, &7%s&r was invalid. &7%s&r will be afflicted with &e%s&r instead.");
-    public static final Message TARGET_BEING_AFFLICTED = get("&7You feel a dark force taking hold of you..");
+    public static final Message STARTING_METRICS = get("starting_metrics");
+
+    public static final Message TARGET_INVALID = get("target_invalid");
+    public static final Message TARGET_WILL_BE_AFFLICTED = get("target_afflicted");
+    public static final Message TARGET_WILL_BE_AFFLICTED_BY = get("target_afflicted_by");
+    public static final Message INPUTTED_AFFLICTION_INVALID = get("affliction_invalid");
+    public static final Message TARGET_BEING_AFFLICTED = get("being_afflicted");
+
+    public static final Message MUST_PROVIDE_PLAYER = get("must_provide_player");
+    public static final Message INVALID_PLAYER = get("invalid_player");
+
+    public static final Message GAVE_NOTE_TO_PLAYER = get("death_note_given");
+    public static final Message DEATH_NOTE_RECEIVED = get("death_note_received");
+
+
+    public static final Message NO_PERMISSION = get("dont_have_permissions");
+
+    public static final Message INVALID_SUB_COMMAND = get("invalid_sub_command");
+
+    public static final Message VALID_AFFLICTIONS = get("valid_afflictions");
+    public static final Message AFFLICTION_EXAMPLE = get("affliction_example");
 
 
     // Message code
@@ -43,16 +61,11 @@ public class Message {
         this.message = message;
     }
 
-    private static Message get(String message) {
-        return new Message(message);
+    private static Message get(String id) {
+        return new Message(messageBundle.getString(id));
     }
 
     public void sendActionBar(@Nullable CommandSender receiver, Object... params) {
-        if (!(receiver instanceof Player)) return;
-        Util.sendActionBar((Player) receiver, message, params);
-    }
-
-    public void sendTitle(String title, @Nullable CommandSender receiver, Object... params) {
         if (!(receiver instanceof Player)) return;
         Util.sendActionBar((Player) receiver, message, params);
     }

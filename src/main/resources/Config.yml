@@ -11,3 +11,8 @@ UpdateCheck:
   #  when a new update is available when they join/reload the plugin?
   MessageOnJoin: true
   MessageOnReload: true
+
+Afflictions:
+  Explosion: true
+  Lightning: true
+  Fire: true
