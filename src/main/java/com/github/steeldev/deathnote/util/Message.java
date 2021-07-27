@@ -50,8 +50,7 @@ public class Message {
 
     public static final Message INVALID_SUB_COMMAND = get("invalid_sub_command");
 
-    public static final Message VALID_AFFLICTIONS = get("valid_afflictions");
-    public static final Message AFFLICTION_EXAMPLE = get("affliction_example");
+    public static final Message EXPECTED_NUMBER = get("expected_number");
 
 
     // Message code

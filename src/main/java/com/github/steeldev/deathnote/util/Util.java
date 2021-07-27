@@ -142,6 +142,10 @@ public class Util {
         return afflicted.get(player);
     }
 
+    public static String trimEndingWhiteSpace(String input){
+        return input.replaceAll("\\s+$","");
+    }
+
     public static boolean isDeathNote(ItemStack item) {
         if (!item.getType().equals(Material.WRITABLE_BOOK)) return false;
         if (Util.monstrorvmEnabled()) return ItemManager.isMVItem(item, deathNoteID);

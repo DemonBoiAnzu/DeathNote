@@ -7,7 +7,7 @@ import com.github.steeldev.deathnote.util.DNLogger;
 import com.github.steeldev.deathnote.util.Message;
 import com.github.steeldev.deathnote.util.UpdateChecker;
 import com.github.steeldev.deathnote.util.Util;
-import com.github.steeldev.deathnote.util.config.Config;
+import com.github.steeldev.deathnote.util.Config;
 import com.github.steeldev.monstrorvm.api.items.ItemManager;
 import com.github.steeldev.monstrorvm.api.items.MVItem;
 import de.tr7zw.changeme.nbtapi.NBTItem;

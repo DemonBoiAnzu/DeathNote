@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Afflictions {
+import static com.github.steeldev.deathnote.util.Util.getMain;
+import static com.github.steeldev.deathnote.util.Util.rand;
+
+public class AfflictionManager {
     private static final Map<String, Affliction> registry = new HashMap<>();
 
     static Affliction defaultAffliction;
@@ -21,19 +24,21 @@ public class Afflictions {
     }
 
     public static void unregister(String key) {
-        registry.remove(key);
+        if(isAfflictionRegistered(key)) registry.remove(key);
     }
 
     public static Affliction get(String key) {
         return registry.get(key);
     }
 
-    public static boolean isAfflictedRegistered(String key) {
+    public static boolean isAfflictionRegistered(String key) {
         return get(key) != null;
     }
 
     public static Affliction getAfflictionByTriggerWord(String trigger) {
-        for (Affliction affliction : registry.values()) {
+        if(trigger.equalsIgnoreCase("random") && getMain().config.RANDOM_AFFLICTION_ENABLED)
+            return getRegistered().get(rand.nextInt(getRegistered().size()));
+        for (Affliction affliction : getRegistered()) {
             if (affliction.getTriggers().contains(trigger))
                 return affliction;
         }
@@ -55,6 +60,6 @@ public class Afflictions {
      * @param defaultAffliction The Affliction to set as the default
      */
     public static void setDefaultAffliction(Affliction defaultAffliction) {
-        Afflictions.defaultAffliction = defaultAffliction;
+        AfflictionManager.defaultAffliction = defaultAffliction;
     }
 }

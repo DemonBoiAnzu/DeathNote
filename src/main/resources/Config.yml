@@ -13,6 +13,15 @@ UpdateCheck:
   MessageOnReload: true
 
 Afflictions:
+  Random: true
   Explosion: true
   Lightning: true
   Fire: true
+  Poison: true
+  Void: true
+  Creeper: true
+  Falling: true
+  Arrows: true
+  Anvil: true
+  Suffocation: true
+  Drowning: true

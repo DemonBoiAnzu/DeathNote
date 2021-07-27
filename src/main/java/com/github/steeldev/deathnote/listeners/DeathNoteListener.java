@@ -1,8 +1,9 @@
 package com.github.steeldev.deathnote.listeners;
 
 import com.github.steeldev.deathnote.api.Affliction;
-import com.github.steeldev.deathnote.api.Afflictions;
+import com.github.steeldev.deathnote.api.AfflictionManager;
 import com.github.steeldev.deathnote.util.Message;
+import com.github.steeldev.deathnote.util.Util;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -39,26 +40,34 @@ public class DeathNoteListener implements Listener {
             return;
         }
         List<String> pages = meta.getPages();
+        if(pages.size() == 0) return;
         String page = pages.get(pages.size() - 1);
 
         List<String> entrySplit = Arrays.asList(page.split(" by "));
-        Player target = Bukkit.getServer().getPlayer(entrySplit.get(0));
-        Affliction defaultAffliction = Afflictions.getDefaultAffliction();
-        Affliction inputtedAffliction = (entrySplit.size() > 1) ? Afflictions.getAfflictionByTriggerWord(entrySplit.get(1)) : defaultAffliction;
+        if(entrySplit.size() == 0) return;
+        String playerEntry = trimEndingWhiteSpace(entrySplit.get(0));
+        String afflictionEntry = (entrySplit.size() > 1) ? trimEndingWhiteSpace(entrySplit.get(1)) : "";
+        Player target = Bukkit.getServer().getPlayer(playerEntry);
+        Affliction defaultAffliction = AfflictionManager.getDefaultAffliction();
+        Affliction inputtedAffliction = (!afflictionEntry.equals("")) ? AfflictionManager.getAfflictionByTriggerWord(afflictionEntry) : defaultAffliction;
         if (target == null) {
-            Message.TARGET_INVALID.send(player, true, entrySplit.get(0));
+            Message.TARGET_INVALID.send(player, true, playerEntry);
             return;
         }
-        String afflictionDisplay = inputtedAffliction.getDisplay();
-
-        if (inputtedAffliction != defaultAffliction)
-            Message.TARGET_WILL_BE_AFFLICTED_BY.send(player, true, target.getName(), afflictionDisplay);
-        else {
-            if (entrySplit.size() > 1)
-                Message.INPUTTED_AFFLICTION_INVALID.send(player, true, entrySplit.get(1), target.getName(), afflictionDisplay);
+        if(inputtedAffliction == null){
+            Message.INPUTTED_AFFLICTION_INVALID.send(player, true, afflictionEntry, target.getName(), defaultAffliction.getDisplay());
+            inputtedAffliction = defaultAffliction;
+        }else{
+            String afflictionDisplay = inputtedAffliction.getDisplay();
+            if (inputtedAffliction != defaultAffliction)
+                Message.TARGET_WILL_BE_AFFLICTED_BY.send(player, true, target.getName(), afflictionDisplay);
             else
                 Message.TARGET_WILL_BE_AFFLICTED.send(player, true, target.getName());
         }
+
+
+
+        Affliction finalInputtedAffliction = inputtedAffliction;
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -68,13 +77,14 @@ public class DeathNoteListener implements Listener {
                 Message.TARGET_BEING_AFFLICTED.send(target, false);
                 target.setGameMode(GameMode.SURVIVAL);
                 target.setFlying(false);
+                target.setInvulnerable(false);
                 target.setHealth(target.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-                setAfflicted(target, inputtedAffliction);
+                setAfflicted(target, finalInputtedAffliction);
 
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        inputtedAffliction.execute(target);
+                        finalInputtedAffliction.execute(target);
                     }
                 }.runTaskLater(getMain(), 40);
             }

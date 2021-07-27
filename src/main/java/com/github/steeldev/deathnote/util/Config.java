@@ -1,4 +1,4 @@
-package com.github.steeldev.deathnote.util.config;
+package com.github.steeldev.deathnote.util;
 
 import com.github.steeldev.deathnote.DeathNote;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,9 +17,18 @@ public class Config {
     public boolean NEW_UPDATE_MESSAGE_ON_JOIN;
     public boolean NEW_UPDATE_MESSAGE_ON_RELOAD;
 
+    public boolean RANDOM_AFFLICTION_ENABLED;
     public boolean EXPLOSION_AFFLICTION_ENABLED;
     public boolean LIGHTNING_AFFLICTION_ENABLED;
     public boolean FIRE_AFFLICTION_ENABLED;
+    public boolean POISON_AFFLICTION_ENABLED;
+    public boolean VOID_AFFLICTION_ENABLED;
+    public boolean CREEPER_AFFLICTION_ENABLED;
+    public boolean FALLING_AFFLICTION_ENABLED;
+    public boolean ARROWS_AFFLICTION_ENABLED;
+    public boolean ANVIL_AFFLICTION_ENABLED;
+    public boolean SUFFOCATION_AFFLICTION_ENABLED;
+    public boolean DROWNING_AFFLICTION_ENABLED;
 
 
     private FileConfiguration config;
@@ -88,8 +97,17 @@ public class Config {
         NEW_UPDATE_MESSAGE_ON_JOIN = config.getBoolean("UpdateCheck.MessageOnJoin");
         NEW_UPDATE_MESSAGE_ON_RELOAD = config.getBoolean("UpdateCheck.MessageOnReload");
 
+        RANDOM_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Random");
         EXPLOSION_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Explosion");
         LIGHTNING_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Lightning");
         FIRE_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Fire");
+        POISON_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Poison");
+        VOID_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Void");
+        CREEPER_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Creeper");
+        FALLING_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Falling");
+        ARROWS_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Arrows");
+        ANVIL_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Anvil");
+        SUFFOCATION_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Suffocation");
+        DROWNING_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Drowning");
     }
 }
