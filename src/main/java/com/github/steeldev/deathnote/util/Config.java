@@ -29,6 +29,9 @@ public class Config {
     public boolean ANVIL_AFFLICTION_ENABLED;
     public boolean SUFFOCATION_AFFLICTION_ENABLED;
     public boolean DROWNING_AFFLICTION_ENABLED;
+    public boolean COW_AFFLICTION_ENABLED;
+    public boolean LAVA_AFFLICTION_ENABLED;
+    public boolean PIG_AFFLICTION_ENABLED;
 
 
     private FileConfiguration config;
@@ -109,5 +112,8 @@ public class Config {
         ANVIL_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Anvil");
         SUFFOCATION_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Suffocation");
         DROWNING_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Drowning");
+        COW_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Cow");
+        LAVA_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Lava");
+        PIG_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Pig");
     }
 }

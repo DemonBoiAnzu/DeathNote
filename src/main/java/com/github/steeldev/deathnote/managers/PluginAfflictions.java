@@ -133,6 +133,7 @@ public class PluginAfflictions {
                     player -> {
                         new BukkitRunnable() {
                             List<LivingEntity> creeperList = new ArrayList<>();
+
                             @Override
                             public void run() {
                                 Creeper creeper = (Creeper) player.getWorld().spawnEntity(player.getLocation(), EntityType.CREEPER);
@@ -141,7 +142,7 @@ public class PluginAfflictions {
                                 creeper.ignite();
                                 creeperList.add(creeper);
                                 if (player.isDead()) {
-                                    for(LivingEntity creep : creeperList){
+                                    for (LivingEntity creep : creeperList) {
                                         creep.remove();
                                     }
                                     this.cancel();
@@ -158,15 +159,15 @@ public class PluginAfflictions {
                     "%s fell to their death",
                     getMain(),
                     player -> {
-                        player.setVelocity(new Vector(0,999,0));
+                        player.setVelocity(new Vector(0, 999, 0));
                         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 4));
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                if(!player.isDead())
+                                if (!player.isDead())
                                     player.damage(player.getHealth());
                             }
-                        }.runTaskLater(getMain(),100);
+                        }.runTaskLater(getMain(), 100);
                     }));
         } else unregister("fall");
 
@@ -177,22 +178,23 @@ public class PluginAfflictions {
                     "%s died to a rain of arrows",
                     getMain(),
                     player -> {
-                        new BukkitRunnable(){
+                        new BukkitRunnable() {
                             List<Entity> arrowList = new ArrayList<>();
+
                             @Override
                             public void run() {
-                                Location arrowSpawn = player.getLocation().add(0,10,0);
-                                Arrow arrow = (Arrow)player.getWorld().spawnEntity(arrowSpawn,EntityType.ARROW);
+                                Location arrowSpawn = player.getLocation().add(0, 10, 0);
+                                Arrow arrow = (Arrow) player.getWorld().spawnEntity(arrowSpawn, EntityType.ARROW);
                                 arrow.setFallDistance(20);
                                 arrowList.add(arrow);
-                                if(player.isDead()){
-                                    for(Entity arr : arrowList){
+                                if (player.isDead()) {
+                                    for (Entity arr : arrowList) {
                                         arr.remove();
                                     }
                                     this.cancel();
                                 }
                             }
-                        }.runTaskTimer(getMain(),10,10);
+                        }.runTaskTimer(getMain(), 10, 10);
                     }));
         } else unregister("arrows");
 
@@ -203,15 +205,15 @@ public class PluginAfflictions {
                     "%s was squashed by an anvil",
                     getMain(),
                     player -> {
-                        new BukkitRunnable(){
+                        new BukkitRunnable() {
                             @Override
                             public void run() {
-                                Location anvilSpawn = player.getLocation().add(0,10,0);
+                                Location anvilSpawn = player.getLocation().add(0, 10, 0);
                                 player.getWorld().getBlockAt(anvilSpawn).setType(Material.ANVIL);
-                                if(player.isDead())
+                                if (player.isDead())
                                     this.cancel();
                             }
-                        }.runTaskTimer(getMain(),20,20);
+                        }.runTaskTimer(getMain(), 20, 20);
                     }));
         } else unregister("anvil");
 
@@ -224,9 +226,9 @@ public class PluginAfflictions {
                     player -> {
                         Location location = player.getLocation();
                         location.setY(7);
-                        player.teleport(location.add(0,1,0));
+                        player.teleport(location.add(0, 1, 0));
                         player.getLocation().getBlock().setType(Material.OBSIDIAN);
-                        player.getLocation().getBlock().getRelative(0,1,0).setType(Material.OBSIDIAN);
+                        player.getLocation().getBlock().getRelative(0, 1, 0).setType(Material.OBSIDIAN);
                     }));
         } else unregister("suffocation");
 
@@ -239,10 +241,85 @@ public class PluginAfflictions {
                     player -> {
                         Location location = player.getLocation();
                         location.setY(7);
-                        player.teleport(location.add(0,1,0));
+                        player.teleport(location.add(0, 1, 0));
                         player.getLocation().getBlock().setType(Material.WATER);
-                        player.getLocation().getBlock().getRelative(0,1,0).setType(Material.WATER);
+                        player.getLocation().getBlock().getRelative(0, 1, 0).setType(Material.WATER);
                     }));
         } else unregister("drowning");
+
+        if (getMain().config.COW_AFFLICTION_ENABLED) {
+            register("cow", new Affliction("&6Cow",
+                    Arrays.asList("cow", "cow crush"),
+                    "The target will be crushed by cows.",
+                    "%s was squashed by cows",
+                    getMain(),
+                    player -> {
+                        new BukkitRunnable() {
+                            List<Entity> cowList = new ArrayList<>();
+
+                            @Override
+                            public void run() {
+                                Location cowSpawn = player.getLocation().add(0, 10, 0);
+                                Cow cow = (Cow) player.getWorld().spawnEntity(cowSpawn, EntityType.COW);
+                                cowList.add(cow);
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!player.isDead()) {
+                                            cow.setInvulnerable(true);
+                                            player.damage(6);
+                                        } else this.cancel();
+                                    }
+                                }.runTaskLater(getMain(), 20);
+                                if (player.isDead()) {
+                                    for (Entity c : cowList) {
+                                        c.remove();
+                                    }
+                                    this.cancel();
+                                }
+                            }
+                        }.runTaskTimer(getMain(), 20, 20);
+                    }));
+        } else unregister("cow");
+
+        if (getMain().config.LAVA_AFFLICTION_ENABLED) {
+            register("lava", new Affliction("&4Lava",
+                    Arrays.asList("lava"),
+                    "The target will burn in lava.",
+                    "%s burned to death in lava",
+                    getMain(),
+                    player -> {
+                        Location location = player.getLocation();
+                        location.setY(7);
+                        player.teleport(location.add(0, 1, 0));
+                        player.getLocation().getBlock().setType(Material.LAVA);
+                        player.getLocation().getBlock().getRelative(0, 1, 0).setType(Material.LAVA);
+                    }));
+        } else unregister("lava");
+
+        if (getMain().config.PIG_AFFLICTION_ENABLED) {
+            register("pig", new Affliction("&5Pig",
+                    Arrays.asList("pig", "pig bomb"),
+                    "The target will be blown up by a pig.",
+                    "%s was blown up by a pig",
+                    getMain(),
+                    player -> {
+                        Pig pig = (Pig) player.getWorld().spawnEntity(player.getLocation(), EntityType.PIG);
+                        pig.setInvulnerable(true);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                pig.setVelocity(new Vector(0, 1, 0));
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        pig.getWorld().createExplosion(pig.getLocation(), 10);
+                                        pig.remove();
+                                    }
+                                }.runTaskLater(getMain(), 25);
+                            }
+                        }.runTaskLater(getMain(), 20);
+                    }));
+        } else unregister("pig");
     }
 }

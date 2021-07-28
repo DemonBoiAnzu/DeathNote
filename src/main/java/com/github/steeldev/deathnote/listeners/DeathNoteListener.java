@@ -2,8 +2,11 @@ package com.github.steeldev.deathnote.listeners;
 
 import com.github.steeldev.deathnote.api.Affliction;
 import com.github.steeldev.deathnote.api.AfflictionManager;
+import com.github.steeldev.deathnote.util.Database;
 import com.github.steeldev.deathnote.util.Message;
+import com.github.steeldev.deathnote.util.Timespan;
 import com.github.steeldev.deathnote.util.Util;
+import com.github.steeldev.deathnote.util.data.DNPlayerData;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -22,6 +25,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,13 +44,15 @@ public class DeathNoteListener implements Listener {
             return;
         }
         List<String> pages = meta.getPages();
-        if(pages.size() == 0) return;
+        if (pages.size() == 0) return;
         String page = pages.get(pages.size() - 1);
-
-        List<String> entrySplit = Arrays.asList(page.split(" by "));
-        if(entrySplit.size() == 0) return;
+        List<String> entrySplit = Arrays.asList(page.split("( by | in )"));
+        if (entrySplit.size() == 0) return;
         String playerEntry = trimEndingWhiteSpace(entrySplit.get(0));
         String afflictionEntry = (entrySplit.size() > 1) ? trimEndingWhiteSpace(entrySplit.get(1)) : "";
+        long time = 30; // in ticks
+        String timeInput = "";
+
         Player target = Bukkit.getServer().getPlayer(playerEntry);
         Affliction defaultAffliction = AfflictionManager.getDefaultAffliction();
         Affliction inputtedAffliction = (!afflictionEntry.equals("")) ? AfflictionManager.getAfflictionByTriggerWord(afflictionEntry) : defaultAffliction;
@@ -54,20 +60,35 @@ public class DeathNoteListener implements Listener {
             Message.TARGET_INVALID.send(player, true, playerEntry);
             return;
         }
-        if(inputtedAffliction == null){
+        if (entrySplit.size() > 2 && Timespan.parse(entrySplit.get(2)) != -1) {
+            time = Timespan.parse(entrySplit.get(2));
+            timeInput = entrySplit.get(2);
+        } else if (entrySplit.size() > 1 && Timespan.parse(entrySplit.get(1)) != -1 && inputtedAffliction == null) {
+            time = Timespan.parse(entrySplit.get(1));
+            timeInput = entrySplit.get(1);
+            inputtedAffliction = defaultAffliction;
+        }
+        if (inputtedAffliction == null) {
             Message.INPUTTED_AFFLICTION_INVALID.send(player, true, afflictionEntry, target.getName(), defaultAffliction.getDisplay());
             inputtedAffliction = defaultAffliction;
-        }else{
+        } else {
             String afflictionDisplay = inputtedAffliction.getDisplay();
-            if (inputtedAffliction != defaultAffliction)
-                Message.TARGET_WILL_BE_AFFLICTED_BY.send(player, true, target.getName(), afflictionDisplay);
-            else
-                Message.TARGET_WILL_BE_AFFLICTED.send(player, true, target.getName());
+            if (inputtedAffliction != defaultAffliction) {
+                if (time > 30)
+                    Message.TARGET_WILL_BE_AFFLICTED_BY_IN.send(player, true, target.getName(), afflictionDisplay, timeInput);
+                else
+                    Message.TARGET_WILL_BE_AFFLICTED_BY.send(player, true, target.getName(), afflictionDisplay);
+            } else {
+                if (time > 30)
+                    Message.TARGET_WILL_BE_AFFLICTED_IN.send(player, true, target.getName(), timeInput);
+                else
+                    Message.TARGET_WILL_BE_AFFLICTED.send(player, true, target.getName());
+            }
         }
 
-
-
         Affliction finalInputtedAffliction = inputtedAffliction;
+        if (getMain().config.DEBUG)
+            Util.log(String.format("&7[DEBUG] &e%s &rhas been set to be afflicted by &7%s &rin &e%d ticks &rby &e%s&r.", target.getName(), inputtedAffliction.getDisplay(), time, player.getName()));
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -88,8 +109,15 @@ public class DeathNoteListener implements Listener {
                     }
                 }.runTaskLater(getMain(), 40);
             }
-        }.runTaskLater(getMain(), 30);
+        }.runTaskLater(getMain(), time);
         setAfflicted(target, null);
+        try{
+            DNPlayerData data = Database.getPlayerData(player);
+            data.kills ++;
+            Database.updatePlayerData(data);
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
     }
 
     @EventHandler
@@ -100,9 +128,22 @@ public class DeathNoteListener implements Listener {
                 !event.getAction().equals(Action.RIGHT_CLICK_AIR)) return;
         ItemStack item = event.getItem();
         Player player = event.getPlayer();
+        DNPlayerData data = null;
+        try {
+             data = Database.getPlayerData(player);
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
         if (item == null) return;
         if (!item.getType().equals(Material.WRITABLE_BOOK)) return;
         if (!isDeathNote(item)) return;
+        if(data == null){
+            try {
+                Database.addPlayer(player);
+            }catch(SQLException ex){
+            }
+            Message.DEATH_NOTE_FIRST_TOUCH.send(player,true);
+        }
         player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, SoundCategory.MASTER, 1, 1);
     }
 

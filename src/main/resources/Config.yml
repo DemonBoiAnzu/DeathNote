@@ -25,3 +25,6 @@ Afflictions:
   Anvil: true
   Suffocation: true
   Drowning: true
+  Cow: true
+  Lava: true
+  Pig: true

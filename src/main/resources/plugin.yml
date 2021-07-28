@@ -5,10 +5,6 @@ main: com.github.steeldev.deathnote.DeathNote
 description: A plugin that brings a recreation of the book from the anime, Death Note
 author: Steel_Dev
 softdepend: [ Monstrorvm ]
-commands:
-  deathnote:
-    description: Main command with sub commands for Death Note
-    aliases: dn
 permissions:
   deathnote.admin:
     description: Allows the user administrator permissions for Death Note.

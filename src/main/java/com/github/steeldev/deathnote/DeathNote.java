@@ -1,17 +1,15 @@
 package com.github.steeldev.deathnote;
 
-import com.github.steeldev.deathnote.commands.DeathNoteCommands;
+import com.github.steeldev.deathnote.commands.MainCommand;
 import com.github.steeldev.deathnote.listeners.DeathNoteListener;
 import com.github.steeldev.deathnote.managers.PluginAfflictions;
-import com.github.steeldev.deathnote.util.DNLogger;
-import com.github.steeldev.deathnote.util.Message;
-import com.github.steeldev.deathnote.util.UpdateChecker;
-import com.github.steeldev.deathnote.util.Util;
-import com.github.steeldev.deathnote.util.Config;
+import com.github.steeldev.deathnote.util.*;
 import com.github.steeldev.monstrorvm.api.items.ItemManager;
 import com.github.steeldev.monstrorvm.api.items.MVItem;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.CommandAPIConfig;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,6 +19,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -47,9 +46,25 @@ public class DeathNote extends JavaPlugin {
     }
 
     @Override
+    public void onLoad() {
+        CommandAPI.onLoad(new CommandAPIConfig().silentLogs(true));
+    }
+
+    @Override
     public void onEnable() {
         long start = System.currentTimeMillis();
         instance = this;
+
+        CommandAPI.onEnable(this);
+        CommandAPI.registerCommand(MainCommand.class);
+
+        try {
+            Database.getConnection();
+            Database.create();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
 
         MinecraftVersion.replaceLogger(getLogger());
 
@@ -60,10 +75,7 @@ public class DeathNote extends JavaPlugin {
         }
 
         loadConfigurations();
-
         registerEvents();
-
-        registerCommands();
 
         if (loadMonstrorvm() != null) {
             monstrorvmPlugin = loadMonstrorvm();
@@ -92,6 +104,11 @@ public class DeathNote extends JavaPlugin {
     @Override
     public void onDisable() {
         Message.PLUGIN_DISABLED.log();
+        try {
+            Database.closeConnection();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
         instance = null;
     }
 
@@ -150,10 +167,6 @@ public class DeathNote extends JavaPlugin {
                 return "No Monstrorvm";
             }));
         }
-    }
-
-    public void registerCommands() {
-        Util.registerCommand("deathnote", new DeathNoteCommands());
     }
 
     public void registerEvents() {

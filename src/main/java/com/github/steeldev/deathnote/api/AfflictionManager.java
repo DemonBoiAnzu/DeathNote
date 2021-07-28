@@ -24,7 +24,7 @@ public class AfflictionManager {
     }
 
     public static void unregister(String key) {
-        if(isAfflictionRegistered(key)) registry.remove(key);
+        if (isAfflictionRegistered(key)) registry.remove(key);
     }
 
     public static Affliction get(String key) {
@@ -36,7 +36,7 @@ public class AfflictionManager {
     }
 
     public static Affliction getAfflictionByTriggerWord(String trigger) {
-        if(trigger.equalsIgnoreCase("random") && getMain().config.RANDOM_AFFLICTION_ENABLED)
+        if (trigger.equalsIgnoreCase("random") && getMain().config.RANDOM_AFFLICTION_ENABLED)
             return getRegistered().get(rand.nextInt(getRegistered().size()));
         for (Affliction affliction : getRegistered()) {
             if (affliction.getTriggers().contains(trigger))

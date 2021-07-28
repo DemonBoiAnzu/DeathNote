@@ -35,7 +35,9 @@ public class Message {
 
     public static final Message TARGET_INVALID = get("target_invalid");
     public static final Message TARGET_WILL_BE_AFFLICTED = get("target_afflicted");
+    public static final Message TARGET_WILL_BE_AFFLICTED_IN = get("target_afflicted_in");
     public static final Message TARGET_WILL_BE_AFFLICTED_BY = get("target_afflicted_by");
+    public static final Message TARGET_WILL_BE_AFFLICTED_BY_IN = get("target_afflicted_by_in");
     public static final Message INPUTTED_AFFLICTION_INVALID = get("affliction_invalid");
     public static final Message TARGET_BEING_AFFLICTED = get("being_afflicted");
 
@@ -44,6 +46,11 @@ public class Message {
 
     public static final Message GAVE_NOTE_TO_PLAYER = get("death_note_given");
     public static final Message DEATH_NOTE_RECEIVED = get("death_note_received");
+
+    public static final Message DEATH_NOTE_FIRST_TOUCH = get("first_time");
+    public static final Message PLAYER_HASNT_TOUCHED = get("player_hasnt_touched");
+    public static final Message PLAYER_HASNT_KILLED = get("player_hasnt_killed");
+    public static final Message PLAYER_KILLS = get("player_kills");
 
 
     public static final Message NO_PERMISSION = get("dont_have_permissions");
