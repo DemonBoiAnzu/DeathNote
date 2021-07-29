@@ -30,9 +30,21 @@ Examples:
 
 Note: when a player is inflicted, they will not be able to break/place/use anything. Because staying true to the anime, they must die if their name is written in the note. Upon dying, or leaving the server, however, they will no longer be afflicted.
 
+The plugin comes with a few default afflictions. These can of course be toggled in the Config.
+
 ## Screenshots & other media
 
-Coming soon
+![](https://github.com/Steel-Dev/DeathNote/blob/main/Screenshots/NoteLore.png?raw=true)
+The notes lore on it's item
+
+![](https://github.com/Steel-Dev/DeathNote/blob/main/Screenshots/TableOfContents.png?raw=true)
+The notes table of contents page
+
+![](https://github.com/Steel-Dev/DeathNote/blob/main/Screenshots/HowToUse.png?raw=true)
+The notes how to use page
+
+![](https://github.com/Steel-Dev/DeathNote/blob/main/Screenshots/Afflictions.png?raw=true)
+The afflictions list (default afflictions that come with the plugin)
 
 ## Commands
 There are a small amount of commands that come with this, then being:
@@ -44,7 +56,7 @@ There are a small amount of commands that come with this, then being:
 5) kills -> View yours or another players kill with the Death Note
 
 ## Resource Pack
-The plugin has it's own resource pack (but, it does not force it) - if you'd like to use it for the custom book texture & gui texture, you can download it [here.]()
+The plugin has it's own resource pack (but, it does not force it) - if you'd like to use it for the custom book texture & gui texture, you can download it [here.](https://www.dropbox.com/s/0gg58qu43abfxj4/DeathNote_ResourcePack.zip?dl=1)
 
 ## But wait, that's not all, there's more!
 Death Note comes with it's own internal API you can hook into with your own plugins and register your own Afflictions! That's right! You can make addons for this plugin.
