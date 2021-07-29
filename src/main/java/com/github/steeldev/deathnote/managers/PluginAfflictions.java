@@ -391,7 +391,7 @@ public class PluginAfflictions {
                                                                 }
                                                             }
                                                         }
-                                                    }.runTaskLater(getMain(), 10);
+                                                    }.runTaskLater(getMain(), 5);
                                                 }
                                             }.runTaskLater(getMain(), 60);
                                             this.cancel();
