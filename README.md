@@ -37,6 +37,15 @@ Note: when a player is inflicted, they will not be able to break/place/use anyth
 
 Coming soon
 
+## Commands
+There are a small amount of commands that come with this, then being:
+
+1) help -> Shows a list of commands
+2) reload -> Reload the plugin
+3) afflictions -> Open the afflictions gui to view all registered
+4) give -> Give the Death Note to yourself or another player
+5) kills -> View yours or another players kill with the Death Note
+
 ## Resource Pack
 The plugin has it's own resource pack (but, it does not force it) - if you'd like to use it for the custom book texture & gui texture, you can download it [here.]()
 
