@@ -35,15 +35,22 @@ The plugin comes with a few default afflictions. These can of course be toggled 
 ## Screenshots & other media
 
 ![](https://github.com/Steel-Dev/DeathNote/blob/main/Screenshots/NoteLore.png?raw=true)
+
 The notes lore on it's item
 
+
 ![](https://github.com/Steel-Dev/DeathNote/blob/main/Screenshots/TableOfContents.png?raw=true)
+
 The notes table of contents page
 
+
 ![](https://github.com/Steel-Dev/DeathNote/blob/main/Screenshots/HowToUse.png?raw=true)
+
 The notes how to use page
 
+
 ![](https://github.com/Steel-Dev/DeathNote/blob/main/Screenshots/Afflictions.png?raw=true)
+
 The afflictions list (default afflictions that come with the plugin)
 
 ## Commands
