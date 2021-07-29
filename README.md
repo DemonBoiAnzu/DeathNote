@@ -16,20 +16,15 @@ To use the note, right click normally while holding it, and then you can start t
 There are 3 ways of using it - 
 
 1) simply inputting the players name, they will die of the default affliction - which is a Heart Attack. 
-
 2) Adding 'by' after their name and a cause of death, they will die of that cause if it is valid, if its invalid it will go to the default cause.
-
 3) Adding 'in' after the name, or cause of death, and then a timespan (e.g 10 minutes) the player won't be afflicted until that time passes.
 
 Examples:
 
-Herobrine -> Herobrine will die of a heart attack.
-
-Herobrine in 10 minutes -> Herobrine will die of a heart attack in 10 minutes.
-
-Herobrine by fire -> Herobrine will die of fire.
-
-Herobrine by fire in 10 minutes -> Herobrine will die of fire in 10 minutes.
+1) Herobrine -> Herobrine will die of a heart attack.
+2) Herobrine in 10 minutes -> Herobrine will die of a heart attack in 10 minutes.
+3) Herobrine by fire -> Herobrine will die of fire.
+4) Herobrine by fire in 10 minutes -> Herobrine will die of fire in 10 minutes.
 
 Note: when a player is inflicted, they will not be able to break/place/use anything. Because staying true to the anime, they must die if their name is written in the note. Upon dying, or leaving the server, however, they will no longer be afflicted.
 
