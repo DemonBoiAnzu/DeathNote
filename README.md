@@ -69,7 +69,7 @@ AfflictionManager.register(new Affliction("void", // The ID/Key of the afflictio
                     }));
 ```
 
-And that's it! You can mass-register as well, and don't forget to call `AfflictionManager#refreshAfflictionsBook()` after registering your Afflictions so the Affliction book is updated with your new entries. (this is to prevent it constantly refreshing the book, it should only be refreshed when needed)
+And that's it! Don't forget to call `AfflictionManager#refreshAfflictionsBook()` after registering your Afflictions so the Affliction book is updated with your new entries (this is to prevent it constantly refreshing the book, it should only be refreshed when needed). Remember you can register multiple afflictions at a time.
 
 The above forces the addon to only function if Death Note is present, if it is not, it won't load - however, you can of course make it optional - for instance, if the plugin is present, register your Afflictions, if not, do nothing or whatever else.
 
@@ -91,18 +91,18 @@ public void onEnable() {
     }
   } else {
     getServer().getLogger().info("DeathNote not present, skipping registering custom afflictions.");
-    // Death Note not found
+    // Death Note not found, therefore we don't register afflictions.
   }
 }
 
-Plugin getDeathNotePlugin() {
+private Plugin getDeathNotePlugin() {
   return getPluginManager().getPlugin("DeathNote");
 }
 ```
 
 I do it this way to prevent any errors if the plugin isn't present (this could be useful if your addon isn't strictly just for DeathNote)
 
-If you want to, might also be a good idea to make a Utility function to check if DeathNote is present and enabled, so you can run this check before using anything from DeathNotes api to prevent any errors.
+If you want to, might also be a good idea to make a utility method to check if DeathNote is present and enabled, so you can run this check before using anything from DeathNotes API to prevent any errors.
 
 ```java
 public static boolean isDeathNoteEnabled(){
