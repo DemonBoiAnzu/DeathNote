@@ -32,4 +32,4 @@ Herobrine by fire in 10 minutes -> Herobrine will die of fire in 10 minutes.
 ## But wait, that's not all, there's more!
 Death Note comes with it's own internal API you can hook into with your own plugins and register your own Afflictions! That's right! You can make addons for this plugin.
 
-It's simple to use!
+API usage will be added soon.
