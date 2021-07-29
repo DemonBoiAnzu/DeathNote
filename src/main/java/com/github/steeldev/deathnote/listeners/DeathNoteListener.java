@@ -179,7 +179,7 @@ public class DeathNoteListener implements Listener {
             Affliction affliction = getPlayerAffliction(player);
             if (affliction == null) return;
             if (affliction.getDeathMessage() != null && !affliction.getDeathMessage().isEmpty())
-                event.setDeathMessage(String.format(affliction.getDeathMessage(), player.getName()));
+                event.setDeathMessage(player.getName() + " " + affliction.getDeathMessage());
             setAfflicted(player, null);
         }
     }

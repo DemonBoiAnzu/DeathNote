@@ -25,7 +25,7 @@ public class PluginAfflictions {
                 "&cHeart Attack",
                 Arrays.asList("heart attack", "sudden death"),
                 "The target will have a heart attack and die instantly.",
-                "%s had a heart attack",
+                "had a heart attack",
                 getMain(),
                 player -> player.damage(player.getHealth()));
         setDefaultAffliction(heartAttack);
@@ -36,7 +36,7 @@ public class PluginAfflictions {
             register(new Affliction("explosion", "&cExplosion",
                     Arrays.asList("explosion", "boom", "big boom"),
                     "The target will have a powerful explosion manifested at their feet.",
-                    "%s blew up",
+                    "blew up",
                     getMain(),
                     player -> player.getWorld().createExplosion(player.getLocation(), 10, true)));
         } else unregister("explosion");
@@ -46,7 +46,7 @@ public class PluginAfflictions {
                     "&eLightning",
                     Arrays.asList("lightning", "smite", "strike down"),
                     "The target will get struck by lightning until they die.",
-                    "%s was struck by lightning",
+                    "was struck by lightning",
                     getMain(),
                     player -> {
                         World world = player.getWorld();
@@ -70,7 +70,7 @@ public class PluginAfflictions {
                     "&4Fire",
                     Arrays.asList("fire", "burning"),
                     "The target will burn to death, with no way of stopping it.",
-                    "%s burned to death",
+                    "burned to death",
                     getMain(),
                     player -> {
                         World world = player.getWorld();
@@ -96,7 +96,7 @@ public class PluginAfflictions {
                     "&2Poison",
                     Arrays.asList("poison"),
                     "The target will get poisoned until they die.",
-                    "%s was poisoned to death",
+                    "was poisoned to death",
                     getMain(),
                     player -> {
                         new BukkitRunnable() {
@@ -119,7 +119,7 @@ public class PluginAfflictions {
             register(new Affliction("void", "&8Void",
                     Arrays.asList("void"),
                     "The target will be teleported into the void.",
-                    "%s fell out of the world",
+                    "fell out of the world",
                     getMain(),
                     player -> {
                         Location loc = player.getLocation();
@@ -133,7 +133,7 @@ public class PluginAfflictions {
                     "&2Creeper",
                     Arrays.asList("creeper", "creepers"),
                     "The target will have creepers spawned on them until they die.",
-                    "%s was blown up by creepers",
+                    "was blown up by creepers",
                     getMain(),
                     player -> {
                         new BukkitRunnable() {
@@ -162,7 +162,7 @@ public class PluginAfflictions {
                     "&rFalling",
                     Arrays.asList("fall", "falling"),
                     "The target will be launched into the air and fall to their death.",
-                    "%s fell to their death",
+                    "fell to their death",
                     getMain(),
                     player -> {
                         player.setVelocity(new Vector(0, 999, 0));
@@ -182,7 +182,7 @@ public class PluginAfflictions {
                     "&8Arrows",
                     Arrays.asList("arrows", "arrow storm"),
                     "The target will have arrows fall onto them until they die.",
-                    "%s died to a rain of arrows",
+                    "died to a rain of arrows",
                     getMain(),
                     player -> {
                         new BukkitRunnable() {
@@ -210,7 +210,7 @@ public class PluginAfflictions {
                     "&8Anvil",
                     Arrays.asList("anvil", "anvils"),
                     "The target will have anvils fall onto them until they die.",
-                    "%s was squashed by an anvil",
+                    "was squashed by an anvil",
                     getMain(),
                     player -> {
                         new BukkitRunnable() {
@@ -230,7 +230,7 @@ public class PluginAfflictions {
                     "&8Suffocation",
                     Arrays.asList("suffocation", "wall breathing"),
                     "The target will be suffocated.",
-                    "%s suffocated",
+                    "suffocated",
                     getMain(),
                     player -> {
                         Location location = player.getLocation();
@@ -246,7 +246,7 @@ public class PluginAfflictions {
                     "&bDrowning",
                     Arrays.asList("drowning", "drown"),
                     "The target will drown.",
-                    "%s drowned",
+                    "drowned",
                     getMain(),
                     player -> {
                         Location location = player.getLocation();
@@ -262,7 +262,7 @@ public class PluginAfflictions {
                     "&6Cow",
                     Arrays.asList("cow", "cow crush"),
                     "The target will be crushed by cows.",
-                    "%s was squashed by cows",
+                    "was squashed by cows",
                     getMain(),
                     player -> {
                         new BukkitRunnable() {
@@ -297,7 +297,7 @@ public class PluginAfflictions {
             register(new Affliction("lava", "&4Lava",
                     Arrays.asList("lava"),
                     "The target will burn in lava.",
-                    "%s burned to death in lava",
+                    "burned to death in lava",
                     getMain(),
                     player -> {
                         Location location = player.getLocation();
@@ -313,7 +313,7 @@ public class PluginAfflictions {
                     "&5Pig",
                     Arrays.asList("pig", "pig bomb"),
                     "The target will be blown up by a pig.",
-                    "%s was blown up by a pig",
+                    "was blown up by a pig",
                     getMain(),
                     player -> {
                         Pig pig = (Pig) player.getWorld().spawnEntity(player.getLocation(), EntityType.PIG);
@@ -339,7 +339,7 @@ public class PluginAfflictions {
                     "&bArchangels Fury",
                     Arrays.asList("archangels fury", "archangels smite", "archangels wrath"),
                     "The target will be smitten by the Archangel.",
-                    "%s was smitten by the Archangel.",
+                    "was smitten by the Archangel.",
                     getMain(),
                     player -> {
                         World world = player.getWorld();
