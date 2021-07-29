@@ -139,7 +139,7 @@ public static boolean isDeathNoteEnabled(){
 
 ## Don't want to use Java? no worries!
 
-My buddy, Jay/Ankoki will be implementing skript into Death Note, so you can register your afflictions using skript! (Not implemented yet!)
+My buddy, Jay/Ankoki will be implementing skript into Death Note, so you can register your afflictions using skript! (Not implemented yet! There will be an update posted when it's finished!)
 
 
 
