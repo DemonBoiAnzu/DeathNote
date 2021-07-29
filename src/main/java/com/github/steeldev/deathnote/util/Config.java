@@ -16,6 +16,7 @@ public class Config {
     public boolean DEBUG;
     public boolean NEW_UPDATE_MESSAGE_ON_JOIN;
     public boolean NEW_UPDATE_MESSAGE_ON_RELOAD;
+    public boolean TRACK_KILLS;
 
     public boolean RANDOM_AFFLICTION_ENABLED;
     public boolean EXPLOSION_AFFLICTION_ENABLED;
@@ -98,6 +99,7 @@ public class Config {
     private void loadConfigs() {
         PREFIX = config.getString("Prefix");
         DEBUG = config.getBoolean("Debug");
+        TRACK_KILLS = config.getBoolean("TrackKills");
         NEW_UPDATE_MESSAGE_ON_JOIN = config.getBoolean("UpdateCheck.MessageOnJoin");
         NEW_UPDATE_MESSAGE_ON_RELOAD = config.getBoolean("UpdateCheck.MessageOnReload");
 

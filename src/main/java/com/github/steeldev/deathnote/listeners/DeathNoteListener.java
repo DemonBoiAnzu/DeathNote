@@ -47,7 +47,7 @@ public class DeathNoteListener implements Listener {
         List<String> pages = meta.getPages();
         if (pages.size() == 0) return;
         List<String> pagesSplit = Arrays.asList(pages.get(pages.size() - 1).split("\n"));
-        String page = pagesSplit.get(pagesSplit.size()-1);
+        String page = pagesSplit.get(pagesSplit.size() - 1);
         List<String> entrySplit = Arrays.asList(page.split("( by | in)"));
         Util.log("Entry: " + entrySplit);
         if (entrySplit.size() == 0) return;
@@ -114,12 +114,15 @@ public class DeathNoteListener implements Listener {
             }
         }.runTaskLater(getMain(), time);
         setAfflicted(target, null);
-        try {
-            DNPlayerData data = Database.getPlayerData(player);
-            data.kills++;
-            Database.updatePlayerData(data);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        if (!target.isDead()) defaultAffliction.execute(target);
+        if (getMain().config.TRACK_KILLS) {
+            try {
+                DNPlayerData data = Database.getPlayerData(player);
+                data.kills++;
+                Database.updatePlayerData(data);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -131,22 +134,24 @@ public class DeathNoteListener implements Listener {
                 !event.getAction().equals(Action.RIGHT_CLICK_AIR)) return;
         ItemStack item = event.getItem();
         Player player = event.getPlayer();
-        DNPlayerData data = null;
-        try {
-            data = Database.getPlayerData(player);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        if (item == null) return;
-        if (!item.getType().equals(Material.WRITABLE_BOOK)) return;
-        if (!isDeathNote(item)) return;
-        if (data == null) {
+        if (getMain().config.TRACK_KILLS) {
+            DNPlayerData data = null;
             try {
-                Database.addPlayer(player);
+                data = Database.getPlayerData(player);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            Message.DEATH_NOTE_FIRST_TOUCH.send(player, true);
+            if (item == null) return;
+            if (!item.getType().equals(Material.WRITABLE_BOOK)) return;
+            if (!isDeathNote(item)) return;
+            if (data == null) {
+                try {
+                    Database.addPlayer(player);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                Message.DEATH_NOTE_FIRST_TOUCH.send(player, true);
+            }
         }
         player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, SoundCategory.MASTER, 1, 1);
         if (player.isSneaking()) {

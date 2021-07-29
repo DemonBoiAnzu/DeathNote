@@ -1,6 +1,7 @@
 package com.github.steeldev.deathnote.commands;
 
 import com.github.steeldev.deathnote.managers.PluginAfflictions;
+import com.github.steeldev.deathnote.util.Config;
 import com.github.steeldev.deathnote.util.Database;
 import com.github.steeldev.deathnote.util.Message;
 import com.github.steeldev.deathnote.util.Util;
@@ -62,6 +63,10 @@ public class MainCommand {
 
     @Subcommand("kills")
     public static void kills(CommandSender sender) {
+        if(!getMain().config.TRACK_KILLS){
+            Message.FEATURE_DISABLED.send(sender, true);
+            return;
+        }
         if (!(sender instanceof Player)) {
             Message.MUST_PROVIDE_PLAYER.send(sender, true);
             return;
@@ -71,6 +76,10 @@ public class MainCommand {
 
     @Subcommand("kills")
     public static void kills(CommandSender sender, @APlayerArgument Player player) {
+        if(!getMain().config.TRACK_KILLS){
+            Message.FEATURE_DISABLED.send(sender, true);
+            return;
+        }
         if (player == null) {
             Message.INVALID_PLAYER.send(sender, true);
             return;

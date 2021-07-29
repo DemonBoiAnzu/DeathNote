@@ -1,5 +1,7 @@
 package com.github.steeldev.deathnote.api;
 
+import com.github.steeldev.deathnote.util.Message;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +48,9 @@ public class AfflictionManager {
             if (affliction.getRegisteredBy().equals(tempAff.getRegisteredBy()))
                 registry.replace(affliction.getKey(), affliction);
         } else registry.put(affliction.getKey(), affliction);
+
+        if (affliction.getRegisteredBy() != getMain() && getMain().config.DEBUG)
+            Message.AFFLICTION_REGISTERED.log(affliction.getDisplay(), affliction.getRegisteredBy().getName());
     }
 
     /**
@@ -54,8 +59,14 @@ public class AfflictionManager {
      * @param key Afflictions key
      */
     public static void unregister(String key) {
-        if (isAfflictionRegistered(key))
+        if (isAfflictionRegistered(key)) {
+            if (getMain().config.DEBUG) {
+                Affliction affliction = get(key);
+                if (affliction.getRegisteredBy() != getMain())
+                    Message.AFFLICTION_UNREGISTERED.log(affliction.getDisplay());
+            }
             registry.remove(key);
+        }
     }
 
     /**

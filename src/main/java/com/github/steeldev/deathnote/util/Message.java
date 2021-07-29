@@ -61,6 +61,12 @@ public class Message {
 
     public static final Message EXPECTED_NUMBER = get("expected_number");
 
+    public static final Message DEFAULTS_REGISTERED = get("defaults_registered");
+    public static final Message AFFLICTION_REGISTERED = get("affliction_registered");
+    public static final Message AFFLICTION_UNREGISTERED = get("affliction_unregistered");
+
+    public static final Message FEATURE_DISABLED = get("feature_disabled");
+
 
     // Message code
     private final String message;

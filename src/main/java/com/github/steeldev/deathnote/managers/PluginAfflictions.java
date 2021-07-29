@@ -2,7 +2,7 @@ package com.github.steeldev.deathnote.managers;
 
 import com.github.steeldev.deathnote.api.Affliction;
 import com.github.steeldev.deathnote.api.AfflictionManager;
-import com.github.steeldev.deathnote.util.Util;
+import com.github.steeldev.deathnote.util.Message;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -345,63 +345,65 @@ public class PluginAfflictions {
                         World world = player.getWorld();
                         world.setThundering(true);
                         world.setStorm(true);
-                        new BukkitRunnable(){
+                        new BukkitRunnable() {
                             @Override
                             public void run() {
-                                new BukkitRunnable(){
+                                new BukkitRunnable() {
                                     int bellChimes = 0;
                                     Location playerLoc = player.getLocation();
+
                                     @Override
                                     public void run() {
                                         playerLoc = player.getLocation();
                                         Location bellLoc = playerLoc;
-                                        bellLoc.add(0,5,0);
-                                        world.playSound(bellLoc, Sound.BLOCK_BELL_USE, SoundCategory.MASTER,1,0.4f);
-                                        world.playSound(bellLoc, Sound.BLOCK_BELL_RESONATE, SoundCategory.MASTER,1,0.4f);
+                                        bellLoc.add(0, 5, 0);
+                                        world.playSound(bellLoc, Sound.BLOCK_BELL_USE, SoundCategory.MASTER, 1, 0.4f);
+                                        world.playSound(bellLoc, Sound.BLOCK_BELL_RESONATE, SoundCategory.MASTER, 1, 0.4f);
                                         bellChimes++;
 
-                                        if(bellChimes >= 5){
-                                            new BukkitRunnable(){
+                                        if (bellChimes >= 5) {
+                                            new BukkitRunnable() {
                                                 @Override
                                                 public void run() {
                                                     playerLoc = player.getLocation();
                                                     world.setThundering(false);
                                                     world.setStorm(false);
                                                     world.strikeLightning(playerLoc);
-                                                    world.createExplosion(playerLoc,15,true);
-                                                    new BukkitRunnable(){
+                                                    world.createExplosion(playerLoc, 15, true);
+                                                    new BukkitRunnable() {
                                                         @Override
                                                         public void run() {
                                                             List<Material> randBlocks = Arrays.asList(Material.OBSIDIAN, Material.BLACK_TERRACOTTA, Material.BLACK_CONCRETE);
                                                             List<Material> soulSands = Arrays.asList(Material.SOUL_SAND, Material.SOUL_SOIL);
-                                                            for(int x = playerLoc.getBlockX() - 10; x <= playerLoc.getBlockX() + 10; x++) {
-                                                                for(int y = playerLoc.getBlockY() - 10; y <= playerLoc.getBlockY() + 10; y++) {
-                                                                    for(int z = playerLoc.getBlockZ() - 10; z <= playerLoc.getBlockZ() + 10; z++) {
-                                                                        Block block = world.getBlockAt(x,y,z);
-                                                                        if(!block.getType().equals(Material.AIR)) {
-                                                                            if(chanceOf(50))
+                                                            for (int x = playerLoc.getBlockX() - 10; x <= playerLoc.getBlockX() + 10; x++) {
+                                                                for (int y = playerLoc.getBlockY() - 10; y <= playerLoc.getBlockY() + 10; y++) {
+                                                                    for (int z = playerLoc.getBlockZ() - 10; z <= playerLoc.getBlockZ() + 10; z++) {
+                                                                        Block block = world.getBlockAt(x, y, z);
+                                                                        if (!block.getType().equals(Material.AIR)) {
+                                                                            if (chanceOf(50))
                                                                                 block.setType(randBlocks.get(rand.nextInt(randBlocks.size())));
                                                                         }
-                                                                        if(block.getType().equals(Material.FIRE)) {
-                                                                            block.getRelative(0,-1,0).setType(soulSands.get(rand.nextInt(soulSands.size())));
+                                                                        if (block.getType().equals(Material.FIRE)) {
+                                                                            block.getRelative(0, -1, 0).setType(soulSands.get(rand.nextInt(soulSands.size())));
                                                                             block.setType(Material.SOUL_FIRE);
                                                                         }
                                                                     }
                                                                 }
                                                             }
                                                         }
-                                                    }.runTaskLater(getMain(),10);
+                                                    }.runTaskLater(getMain(), 10);
                                                 }
-                                            }.runTaskLater(getMain(),60);
+                                            }.runTaskLater(getMain(), 60);
                                             this.cancel();
                                         }
                                     }
-                                }.runTaskTimer(getMain(),0,20);
+                                }.runTaskTimer(getMain(), 0, 20);
                             }
-                        }.runTaskLater(getMain(),150);
+                        }.runTaskLater(getMain(), 150);
                     }));
         } else unregister("archangels_fury");
 
         AfflictionManager.refreshAfflictionsBook();
+        Message.DEFAULTS_REGISTERED.log();
     }
 }
