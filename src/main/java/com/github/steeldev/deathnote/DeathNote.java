@@ -1,15 +1,22 @@
 package com.github.steeldev.deathnote;
 
+import com.github.steeldev.deathnote.api.Affliction;
+import com.github.steeldev.deathnote.api.AfflictionManager;
 import com.github.steeldev.deathnote.commands.MainCommand;
 import com.github.steeldev.deathnote.listeners.DeathNoteListener;
 import com.github.steeldev.deathnote.managers.PluginAfflictions;
 import com.github.steeldev.deathnote.util.*;
 import com.github.steeldev.monstrorvm.api.items.ItemManager;
 import com.github.steeldev.monstrorvm.api.items.MVItem;
+import com.google.common.collect.Lists;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import xyz.upperlevel.spigot.book.BookUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,6 +42,7 @@ public class DeathNote extends JavaPlugin {
     public Plugin monstrorvmPlugin;
     public Logger logger;
     ItemStack deathNoteItem;
+    ItemStack afflictionsBook;
 
     public static DeathNote getInstance() {
         return instance;
@@ -106,7 +115,7 @@ public class DeathNote extends JavaPlugin {
         Message.PLUGIN_DISABLED.log();
         try {
             Database.closeConnection();
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         instance = null;
@@ -149,9 +158,67 @@ public class DeathNote extends JavaPlugin {
         }
     }
 
+    public void createDeathNoteAfflictionsBook() {
+        if (AfflictionManager.getDefaultAffliction() == null) return;
+        List<Affliction> afflictions = AfflictionManager.getRegistered();
+        int pageSize = 13;
+        final List<List<Affliction>> pagesPartition = Lists.partition(afflictions, pageSize);
+        List<BaseComponent[]> bookPages = new ArrayList<>();
+
+        BookUtil.BookBuilder book = BookUtil.writtenBook().author(colorize("&7Ryuk")).title(colorize("&7Death Note Afflictions"));
+
+        TextComponent firstPageComp = new TextComponent("");
+        firstPageComp.addExtra(colorize("\n"));
+        firstPageComp.addExtra(colorize("\n"));
+        firstPageComp.addExtra(colorize("\n"));
+        firstPageComp.addExtra(colorize("\n"));
+        firstPageComp.addExtra(colorize("      &8&lDeath Note\n"));
+        firstPageComp.addExtra(colorize("      &8&lAfflictions\n"));
+        firstPageComp.addExtra(colorize("      &8----------\n"));
+        bookPages.add(new BookUtil.PageBuilder().add(firstPageComp).build());
+        int curPage = 0;
+        for (List<Affliction> pageAfflictions : pagesPartition) {
+            int number = (curPage < 1) ? 1 : (pageSize * curPage) + 1;
+            TextComponent pageComp = new TextComponent("");
+            for (Affliction affliction : pageAfflictions) {
+                TextComponent afflictionComp = new TextComponent(colorize("&e" + number + " &8| &r" + affliction.getDisplay() + "\n"));
+
+                StringBuilder hoverT = new StringBuilder(affliction.getDisplay() + "\n&7Triggers &8| &r" + affliction.getTriggers());
+                if (!affliction.getDescription().isEmpty())
+                    hoverT.append("\n&7Description &8| &r" + affliction.getDescription());
+
+                hoverT.append("\n\n&7Usage Example &8| &rHerobrine by " + affliction.getTriggers().get(0));
+
+                if (!affliction.getRegisteredBy().equals(getMain()))
+                    hoverT.append("\n\n&7From &8| &r" + affliction.getRegisteredBy().getName());
+
+                if (AfflictionManager.getDefaultAffliction().equals(affliction))
+                    hoverT.append("\n\n&7&oDefault Affliction");
+
+
+                Text hoverText = new Text(colorize(hoverT.toString()));
+                afflictionComp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText));
+
+                pageComp.addExtra(afflictionComp);
+
+                number++;
+            }
+            curPage++;
+            bookPages.add(new BookUtil.PageBuilder().add(pageComp).build());
+        }
+        book.pages(bookPages);
+
+        afflictionsBook = book.build();
+    }
+
     public ItemStack getDeathNoteItem() {
         if (Util.monstrorvmEnabled()) return ItemManager.getItem(deathNoteID).getItemStack();
         else return deathNoteItem;
+    }
+
+    public ItemStack getAfflictionsBook() {
+        if (afflictionsBook == null) createDeathNoteAfflictionsBook();
+        return afflictionsBook;
     }
 
     public void enableMetrics() {

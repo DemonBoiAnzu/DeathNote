@@ -24,6 +24,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.upperlevel.spigot.book.BookUtil;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -45,11 +46,13 @@ public class DeathNoteListener implements Listener {
         }
         List<String> pages = meta.getPages();
         if (pages.size() == 0) return;
-        String page = pages.get(pages.size() - 1);
-        List<String> entrySplit = Arrays.asList(page.split("( by | in )"));
+        List<String> pagesSplit = Arrays.asList(pages.get(pages.size() - 1).split("\n"));
+        String page = pagesSplit.get(pagesSplit.size()-1);
+        List<String> entrySplit = Arrays.asList(page.split("( by | in)"));
+        Util.log("Entry: " + entrySplit);
         if (entrySplit.size() == 0) return;
-        String playerEntry = trimEndingWhiteSpace(entrySplit.get(0));
-        String afflictionEntry = (entrySplit.size() > 1) ? trimEndingWhiteSpace(entrySplit.get(1)) : "";
+        String playerEntry = entrySplit.get(0).trim();
+        String afflictionEntry = (entrySplit.size() > 1) ? entrySplit.get(1).trim() : "";
         long time = 30; // in ticks
         String timeInput = "";
 
@@ -60,12 +63,12 @@ public class DeathNoteListener implements Listener {
             Message.TARGET_INVALID.send(player, true, playerEntry);
             return;
         }
-        if (entrySplit.size() > 2 && Timespan.parse(entrySplit.get(2)) != -1) {
-            time = Timespan.parse(entrySplit.get(2));
-            timeInput = entrySplit.get(2);
-        } else if (entrySplit.size() > 1 && Timespan.parse(entrySplit.get(1)) != -1 && inputtedAffliction == null) {
-            time = Timespan.parse(entrySplit.get(1));
-            timeInput = entrySplit.get(1);
+        if (entrySplit.size() > 2 && Timespan.parse(entrySplit.get(2).trim()) != -1) {
+            time = Timespan.parse(entrySplit.get(2).trim());
+            timeInput = entrySplit.get(2).trim();
+        } else if (entrySplit.size() > 1 && Timespan.parse(entrySplit.get(1).trim()) != -1 && inputtedAffliction == null) {
+            time = Timespan.parse(entrySplit.get(1).trim());
+            timeInput = entrySplit.get(1).trim();
             inputtedAffliction = defaultAffliction;
         }
         if (inputtedAffliction == null) {
@@ -111,11 +114,11 @@ public class DeathNoteListener implements Listener {
             }
         }.runTaskLater(getMain(), time);
         setAfflicted(target, null);
-        try{
+        try {
             DNPlayerData data = Database.getPlayerData(player);
-            data.kills ++;
+            data.kills++;
             Database.updatePlayerData(data);
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
@@ -130,21 +133,26 @@ public class DeathNoteListener implements Listener {
         Player player = event.getPlayer();
         DNPlayerData data = null;
         try {
-             data = Database.getPlayerData(player);
-        }catch(SQLException ex){
+            data = Database.getPlayerData(player);
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         if (item == null) return;
         if (!item.getType().equals(Material.WRITABLE_BOOK)) return;
         if (!isDeathNote(item)) return;
-        if(data == null){
+        if (data == null) {
             try {
                 Database.addPlayer(player);
-            }catch(SQLException ex){
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
-            Message.DEATH_NOTE_FIRST_TOUCH.send(player,true);
+            Message.DEATH_NOTE_FIRST_TOUCH.send(player, true);
         }
         player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, SoundCategory.MASTER, 1, 1);
+        if (player.isSneaking()) {
+            event.setCancelled(true);
+            BookUtil.openPlayer(player, getMain().getAfflictionsBook());
+        }
     }
 
     @EventHandler

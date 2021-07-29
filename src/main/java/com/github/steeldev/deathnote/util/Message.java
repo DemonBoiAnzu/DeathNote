@@ -55,6 +55,8 @@ public class Message {
 
     public static final Message NO_PERMISSION = get("dont_have_permissions");
 
+    public static final Message ONLY_PLAYERS_CAN_EXECUTE = get("only_player_can_execute");
+
     public static final Message INVALID_SUB_COMMAND = get("invalid_sub_command");
 
     public static final Message EXPECTED_NUMBER = get("expected_number");

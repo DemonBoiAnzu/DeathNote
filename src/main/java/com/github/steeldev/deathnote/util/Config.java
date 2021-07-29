@@ -32,6 +32,7 @@ public class Config {
     public boolean COW_AFFLICTION_ENABLED;
     public boolean LAVA_AFFLICTION_ENABLED;
     public boolean PIG_AFFLICTION_ENABLED;
+    public boolean ARCHANGELS_FURY_AFFLICTIONS_ENABLED;
 
 
     private FileConfiguration config;
@@ -115,5 +116,6 @@ public class Config {
         COW_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Cow");
         LAVA_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Lava");
         PIG_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Pig");
+        ARCHANGELS_FURY_AFFLICTIONS_ENABLED = config.getBoolean("Afflictions.ArchangelsFury");
     }
 }

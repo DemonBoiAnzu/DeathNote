@@ -1,9 +1,9 @@
 package com.github.steeldev.deathnote.managers;
 
 import com.github.steeldev.deathnote.api.Affliction;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import com.github.steeldev.deathnote.api.AfflictionManager;
+import com.github.steeldev.deathnote.util.Util;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
@@ -16,23 +16,24 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.github.steeldev.deathnote.api.AfflictionManager.*;
-import static com.github.steeldev.deathnote.util.Util.getMain;
+import static com.github.steeldev.deathnote.util.Util.*;
 
 public class PluginAfflictions {
     public static void registerPluginAfflictions() {
         // Cannot be disabled
-        Affliction heartAttack = new Affliction("&cHeart Attack",
+        Affliction heartAttack = new Affliction("heart_attack",
+                "&cHeart Attack",
                 Arrays.asList("heart attack", "sudden death"),
                 "The target will have a heart attack and die instantly.",
                 "%s had a heart attack",
                 getMain(),
                 player -> player.damage(player.getHealth()));
-        register("heart attack", heartAttack);
         setDefaultAffliction(heartAttack);
+        register(heartAttack);
 
 
         if (getMain().config.EXPLOSION_AFFLICTION_ENABLED) {
-            register("explosion", new Affliction("&cExplosion",
+            register(new Affliction("explosion", "&cExplosion",
                     Arrays.asList("explosion", "boom", "big boom"),
                     "The target will have a powerful explosion manifested at their feet.",
                     "%s blew up",
@@ -41,7 +42,8 @@ public class PluginAfflictions {
         } else unregister("explosion");
 
         if (getMain().config.LIGHTNING_AFFLICTION_ENABLED) {
-            register("lightning", new Affliction("&eLightning",
+            register(new Affliction("lightning",
+                    "&eLightning",
                     Arrays.asList("lightning", "smite", "strike down"),
                     "The target will get struck by lightning until they die.",
                     "%s was struck by lightning",
@@ -64,7 +66,8 @@ public class PluginAfflictions {
         } else unregister("lightning");
 
         if (getMain().config.FIRE_AFFLICTION_ENABLED) {
-            register("fire", new Affliction("&4Fire",
+            register(new Affliction("fire",
+                    "&4Fire",
                     Arrays.asList("fire", "burning"),
                     "The target will burn to death, with no way of stopping it.",
                     "%s burned to death",
@@ -89,7 +92,8 @@ public class PluginAfflictions {
         } else unregister("fire");
 
         if (getMain().config.POISON_AFFLICTION_ENABLED) {
-            register("poison", new Affliction("&2Poison",
+            register(new Affliction("poison",
+                    "&2Poison",
                     Arrays.asList("poison"),
                     "The target will get poisoned until they die.",
                     "%s was poisoned to death",
@@ -112,7 +116,7 @@ public class PluginAfflictions {
         } else unregister("poison");
 
         if (getMain().config.VOID_AFFLICTION_ENABLED) {
-            register("void", new Affliction("&8Void",
+            register(new Affliction("void", "&8Void",
                     Arrays.asList("void"),
                     "The target will be teleported into the void.",
                     "%s fell out of the world",
@@ -125,7 +129,8 @@ public class PluginAfflictions {
         } else unregister("void");
 
         if (getMain().config.CREEPER_AFFLICTION_ENABLED) {
-            register("creeper", new Affliction("&2Creeper",
+            register(new Affliction("creeper",
+                    "&2Creeper",
                     Arrays.asList("creeper", "creepers"),
                     "The target will have creepers spawned on them until they die.",
                     "%s was blown up by creepers",
@@ -153,7 +158,8 @@ public class PluginAfflictions {
         } else unregister("creeper");
 
         if (getMain().config.FALLING_AFFLICTION_ENABLED) {
-            register("fall", new Affliction("&rFalling",
+            register(new Affliction("falling",
+                    "&rFalling",
                     Arrays.asList("fall", "falling"),
                     "The target will be launched into the air and fall to their death.",
                     "%s fell to their death",
@@ -172,7 +178,8 @@ public class PluginAfflictions {
         } else unregister("fall");
 
         if (getMain().config.ARROWS_AFFLICTION_ENABLED) {
-            register("arrows", new Affliction("&7Arrows",
+            register(new Affliction("arrows",
+                    "&8Arrows",
                     Arrays.asList("arrows", "arrow storm"),
                     "The target will have arrows fall onto them until they die.",
                     "%s died to a rain of arrows",
@@ -199,7 +206,8 @@ public class PluginAfflictions {
         } else unregister("arrows");
 
         if (getMain().config.ANVIL_AFFLICTION_ENABLED) {
-            register("anvil", new Affliction("&7Anvil",
+            register(new Affliction("anvil",
+                    "&8Anvil",
                     Arrays.asList("anvil", "anvils"),
                     "The target will have anvils fall onto them until they die.",
                     "%s was squashed by an anvil",
@@ -218,7 +226,8 @@ public class PluginAfflictions {
         } else unregister("anvil");
 
         if (getMain().config.SUFFOCATION_AFFLICTION_ENABLED) {
-            register("suffocation", new Affliction("&7Suffocation",
+            register(new Affliction("suffocation",
+                    "&8Suffocation",
                     Arrays.asList("suffocation", "wall breathing"),
                     "The target will be suffocated.",
                     "%s suffocated",
@@ -233,7 +242,8 @@ public class PluginAfflictions {
         } else unregister("suffocation");
 
         if (getMain().config.DROWNING_AFFLICTION_ENABLED) {
-            register("drowning", new Affliction("&bDrowning",
+            register(new Affliction("drowning",
+                    "&bDrowning",
                     Arrays.asList("drowning", "drown"),
                     "The target will drown.",
                     "%s drowned",
@@ -248,7 +258,8 @@ public class PluginAfflictions {
         } else unregister("drowning");
 
         if (getMain().config.COW_AFFLICTION_ENABLED) {
-            register("cow", new Affliction("&6Cow",
+            register(new Affliction("cow",
+                    "&6Cow",
                     Arrays.asList("cow", "cow crush"),
                     "The target will be crushed by cows.",
                     "%s was squashed by cows",
@@ -283,7 +294,7 @@ public class PluginAfflictions {
         } else unregister("cow");
 
         if (getMain().config.LAVA_AFFLICTION_ENABLED) {
-            register("lava", new Affliction("&4Lava",
+            register(new Affliction("lava", "&4Lava",
                     Arrays.asList("lava"),
                     "The target will burn in lava.",
                     "%s burned to death in lava",
@@ -298,7 +309,8 @@ public class PluginAfflictions {
         } else unregister("lava");
 
         if (getMain().config.PIG_AFFLICTION_ENABLED) {
-            register("pig", new Affliction("&5Pig",
+            register(new Affliction("pig",
+                    "&5Pig",
                     Arrays.asList("pig", "pig bomb"),
                     "The target will be blown up by a pig.",
                     "%s was blown up by a pig",
@@ -321,5 +333,75 @@ public class PluginAfflictions {
                         }.runTaskLater(getMain(), 20);
                     }));
         } else unregister("pig");
+
+        if (getMain().config.ARCHANGELS_FURY_AFFLICTIONS_ENABLED) {
+            register(new Affliction("archangels_fury",
+                    "&bArchangels Fury",
+                    Arrays.asList("archangels fury", "archangels smite", "archangels wrath"),
+                    "The target will be smitten by the Archangel.",
+                    "%s was smitten by the Archangel.",
+                    getMain(),
+                    player -> {
+                        World world = player.getWorld();
+                        world.setThundering(true);
+                        world.setStorm(true);
+                        new BukkitRunnable(){
+                            @Override
+                            public void run() {
+                                new BukkitRunnable(){
+                                    int bellChimes = 0;
+                                    Location playerLoc = player.getLocation();
+                                    @Override
+                                    public void run() {
+                                        playerLoc = player.getLocation();
+                                        Location bellLoc = playerLoc;
+                                        bellLoc.add(0,5,0);
+                                        world.playSound(bellLoc, Sound.BLOCK_BELL_USE, SoundCategory.MASTER,1,0.4f);
+                                        world.playSound(bellLoc, Sound.BLOCK_BELL_RESONATE, SoundCategory.MASTER,1,0.4f);
+                                        bellChimes++;
+
+                                        if(bellChimes >= 5){
+                                            new BukkitRunnable(){
+                                                @Override
+                                                public void run() {
+                                                    playerLoc = player.getLocation();
+                                                    world.setThundering(false);
+                                                    world.setStorm(false);
+                                                    world.strikeLightning(playerLoc);
+                                                    world.createExplosion(playerLoc,15,true);
+                                                    new BukkitRunnable(){
+                                                        @Override
+                                                        public void run() {
+                                                            List<Material> randBlocks = Arrays.asList(Material.OBSIDIAN, Material.BLACK_TERRACOTTA, Material.BLACK_CONCRETE);
+                                                            List<Material> soulSands = Arrays.asList(Material.SOUL_SAND, Material.SOUL_SOIL);
+                                                            for(int x = playerLoc.getBlockX() - 10; x <= playerLoc.getBlockX() + 10; x++) {
+                                                                for(int y = playerLoc.getBlockY() - 10; y <= playerLoc.getBlockY() + 10; y++) {
+                                                                    for(int z = playerLoc.getBlockZ() - 10; z <= playerLoc.getBlockZ() + 10; z++) {
+                                                                        Block block = world.getBlockAt(x,y,z);
+                                                                        if(!block.getType().equals(Material.AIR)) {
+                                                                            if(chanceOf(50))
+                                                                                block.setType(randBlocks.get(rand.nextInt(randBlocks.size())));
+                                                                        }
+                                                                        if(block.getType().equals(Material.FIRE)) {
+                                                                            block.getRelative(0,-1,0).setType(soulSands.get(rand.nextInt(soulSands.size())));
+                                                                            block.setType(Material.SOUL_FIRE);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }.runTaskLater(getMain(),10);
+                                                }
+                                            }.runTaskLater(getMain(),60);
+                                            this.cancel();
+                                        }
+                                    }
+                                }.runTaskTimer(getMain(),0,20);
+                            }
+                        }.runTaskLater(getMain(),150);
+                    }));
+        } else unregister("archangels_fury");
+
+        AfflictionManager.refreshAfflictionsBook();
     }
 }
