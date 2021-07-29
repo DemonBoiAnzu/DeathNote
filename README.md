@@ -6,6 +6,8 @@ Death Note is a minecraft plugin developed for 1.16-1.17+, it introduces a custo
 
 Obviously, this is inspired by the anime Death Note. I only wanted to bring it to life in Minecraft.
 
+This plugin requires a 1.16+ server that's running on Java 16 to function.
+
 ## How to use
 It's simple, just give yourself the Death Note with the command /deathnote give (you can provide a player, as well, if you want)
 
@@ -50,6 +52,8 @@ Death Note comes with it's own internal API you can hook into with your own plug
 ### How to use the API
 
 Using the API is simple, first you need to add Death Note as a dependancy to your addon - and as a depend in your plugin.yml.
+
+Side note: you must compile using Java 16
 
 Maven: coming soon
 
