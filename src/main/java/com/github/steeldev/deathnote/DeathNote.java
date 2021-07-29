@@ -85,7 +85,6 @@ public class DeathNote extends JavaPlugin {
 
         loadConfigurations();
         registerEvents();
-
         if (loadMonstrorvm() != null) {
             monstrorvmPlugin = loadMonstrorvm();
             if (monstrorvmPlugin.isEnabled()) {
