@@ -133,8 +133,17 @@ public class DeathNote extends JavaPlugin {
     }
 
     void createDeathNoteItem() {
+        String deathNoteDisplayName = "<#443c3c>Death Note";
+        List<String> deathNoteLore = new ArrayList<String>() {
+            {
+                add("&7A strange note.");
+                add("");
+                add("&7RMB &c: &7Use Note");
+                add("&7Crouch-RMB &c: &7View Afflictions & How to");
+            }
+        };
         if (Util.monstrorvmEnabled()) {
-            MVItem deathNote = new MVItem(deathNoteID, Material.WRITABLE_BOOK);
+            MVItem deathNote = new MVItem("death_note", Material.WRITABLE_BOOK);
             deathNote.withDisplayName(deathNoteDisplayName);
             deathNote.lore = deathNoteLore;
             deathNote.withCustomModelData(1);
@@ -152,7 +161,7 @@ public class DeathNote extends JavaPlugin {
             meta.setCustomModelData(1);
             deathNote.setItemMeta(meta);
             NBTItem deathNoteNBT = new NBTItem(deathNote);
-            deathNoteNBT.setBoolean(deathNoteID, true);
+            deathNoteNBT.setBoolean("death_note", true);
             deathNoteItem = deathNoteNBT.getItem();
         }
     }
@@ -169,18 +178,30 @@ public class DeathNote extends JavaPlugin {
         TextComponent firstPageComp = new TextComponent("");
         firstPageComp.addExtra(colorize("\n"));
         firstPageComp.addExtra(colorize("\n"));
-        firstPageComp.addExtra(colorize("\n"));
-        firstPageComp.addExtra(colorize("\n"));
-        firstPageComp.addExtra(colorize("      &8&lDeath Note\n"));
-        firstPageComp.addExtra(colorize("      &8&lAfflictions\n"));
+        firstPageComp.addExtra(colorize("      &0&lDeath Note\n"));
+        firstPageComp.addExtra(colorize("&c-&0&lTable of Contents&c-\n"));
         firstPageComp.addExtra(colorize("      &8----------\n"));
+        firstPageComp.addExtra(colorize("\n"));
+        firstPageComp.addExtra(colorize("          &0Pages\n"));
+        firstPageComp.addExtra(colorize("    &0&l2 &8&l| How to Use\n"));
+        firstPageComp.addExtra(colorize("   &0&l3+ &8&l| Afflictions\n"));
+
+        TextComponent howToPageComp = new TextComponent("");
+        howToPageComp.addExtra(colorize("       &0&lHow to Use\n"));
+        howToPageComp.addExtra(colorize("       &8----------\n"));
+        howToPageComp.addExtra(colorize("\n"));
+        howToPageComp.addExtra(colorize("&0-&8The humans whose name is written in this note shall die.\n"));
+        howToPageComp.addExtra(colorize("&0-&8No cause given, they will simply die of a heart attack.\n"));
+        howToPageComp.addExtra(colorize("&0-&8A cause is defined with 'by' and a trigger.\n"));
+        howToPageComp.addExtra(colorize("&0-&8Time is defined with 'in' and a timespan &o(eg 10 minutes)\n"));
         bookPages.add(new BookUtil.PageBuilder().add(firstPageComp).build());
+        bookPages.add(new BookUtil.PageBuilder().add(howToPageComp).build());
         int curPage = 0;
         for (List<Affliction> pageAfflictions : pagesPartition) {
             int number = (curPage < 1) ? 1 : (pageSize * curPage) + 1;
             TextComponent pageComp = new TextComponent("");
             for (Affliction affliction : pageAfflictions) {
-                TextComponent afflictionComp = new TextComponent(colorize("&e" + number + " &8| &r" + affliction.getDisplay() + "\n"));
+                TextComponent afflictionComp = new TextComponent(colorize("&0" + number + " &8| &r" + affliction.getDisplay() + "\n"));
 
                 StringBuilder hoverT = new StringBuilder(affliction.getDisplay() + "\n&7Triggers &8| &r" + affliction.getTriggers());
                 if (!affliction.getDescription().isEmpty())
@@ -211,7 +232,7 @@ public class DeathNote extends JavaPlugin {
     }
 
     public ItemStack getDeathNoteItem() {
-        if (Util.monstrorvmEnabled()) return ItemManager.getItem(deathNoteID).getItemStack();
+        if (Util.monstrorvmEnabled()) return ItemManager.getItem("death_note").getItemStack();
         else return deathNoteItem;
     }
 

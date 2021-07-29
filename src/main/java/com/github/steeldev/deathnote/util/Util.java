@@ -28,25 +28,6 @@ public class Util {
     private static final String NBTAPI_PREFIX = "&7[&8NBTAPI&7]&r ";
     public static Random rand = new Random();
     public static String[] version;
-    public static String deathNoteID = "death_note";
-    public static String deathNoteDisplayName = "<#443c3c>Death Note";
-    public static List<String> deathNoteLore = new ArrayList<String>() {
-        {
-            add("&7The humans whose name");
-            add("&7is written in this note shall die.");
-            add("");
-            add("&7No cause given, they will simply die");
-            add("&7of a heart attack.");
-            add("");
-            add("&7Give a cause by adding 'by' then");
-            add("&7a cause of death.");
-            add("");
-            add("&7Additionally, you can provide a time");
-            add("&7of death as well, by putting 'in'");
-            add("&7followed by a timespan");
-            add("&7&oe.g 10 minutes");
-        }
-    };
     static DeathNote main = DeathNote.getInstance();
     static Map<Player, Affliction> afflicted = new HashMap<>();
 
@@ -148,10 +129,10 @@ public class Util {
 
     public static boolean isDeathNote(ItemStack item) {
         if (!item.getType().equals(Material.WRITABLE_BOOK)) return false;
-        if (Util.monstrorvmEnabled()) return ItemManager.isMVItem(item, deathNoteID);
+        if (Util.monstrorvmEnabled()) return ItemManager.isMVItem(item, "death_note");
         else {
             NBTItem nbtItem = new NBTItem(item);
-            return nbtItem.hasKey(deathNoteID);
+            return nbtItem.hasKey("death_note");
         }
     }
 
