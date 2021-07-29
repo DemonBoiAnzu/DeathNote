@@ -33,6 +33,10 @@ Herobrine by fire in 10 minutes -> Herobrine will die of fire in 10 minutes.
 
 Note: when a player is inflicted, they will not be able to break/place/use anything. Because staying true to the anime, they must die if their name is written in the note. Upon dying, or leaving the server, however, they will no longer be afflicted.
 
+## Screenshots & other media
+
+Coming soon
+
 ## Resource Pack
 The plugin has it's own resource pack (but, it does not force it) - if you'd like to use it for the custom book texture & gui texture, you can download it [here.]()
 
