@@ -1,3 +1,5 @@
+<img align="right" width="128" height="128" src="https://github.com/Steel-Dev/DeathNote/blob/main/icon_enlarged.png?raw=truee">
+
 # DeathNote
 
 Death Note is a minecraft plugin developed for 1.16-1.17+, it introduces a custom item that allows users to input another player's name and that player will die. Additionally, they can provide a time of death, along with a cause of death.
