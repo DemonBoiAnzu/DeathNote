@@ -51,6 +51,8 @@ Death Note comes with it's own internal API you can hook into with your own plug
 
 ### How to use the API
 
+[![](https://jitpack.io/v/Steel-Dev/DeathNote.svg)](https://jitpack.io/#Steel-Dev/DeathNote)
+
 Using the API is simple, first you need to add Death Note as a dependancy to your addon - and as a depend in your plugin.yml.
 
 Side note: you must compile using Java 16
