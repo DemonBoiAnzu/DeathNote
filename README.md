@@ -79,23 +79,23 @@ Usually, I do it this way in my main class:
 public Plugin deathNotePlugin;
 
 @Override
-public void onEnable(){
-  if(getDeathNotePlugin() != null){
+public void onEnable() {
+  if (getDeathNotePlugin() != null) {
     deathNotePlugin = getDeathNotePlugin();
-    if(deathNotePlugin.isEnabled()){
+    if (deathNotePlugin.isEnabled()) {
       getServer().getLogger().info("DeathNote found and enabled! Registering custom afflictions.");
       // Plugin is present and enabled, register afflictions here
-    }else{
+    } else {
       getServer().getLogger().info("DeathNote present, but disabled. Skipping registering custom afflictions.");
       // Plugin is present, but disabled
     }
-  }else{
+  } else {
     getServer().getLogger().info("DeathNote not present, skipping registering custom afflictions.");
     // Death Note not found
   }
 }
 
-Plugin getDeathNotePlugin(){
+Plugin getDeathNotePlugin() {
   return getPluginManager().getPlugin("DeathNote");
 }
 ```
