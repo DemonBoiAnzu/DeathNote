@@ -57,7 +57,7 @@ public class MainCommand {
             return;
         }
         Player player = (Player) sender;
-        Message.DEATH_NOTE_RECEIVED.send(player, false);
+        Message.DEATH_NOTE_RECEIVED.send(player, true);
         player.getInventory().addItem(getMain().getDeathNoteItem());
     }
 
