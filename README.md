@@ -87,7 +87,7 @@ AfflictionManager.register(new Affliction("void", // The ID/Key of the afflictio
                     "&8Void", // The display name of the affliction
                     Arrays.asList("void"), // The list of trigger words
                     "The target will be teleported into the void.", // The description (can be blank)
-                    "%s fell out of the world", // The custom death message (can be blank)
+                    "fell out of the world", // The custom death message (can be blank)
                     getMain(), // The main plugin class of your addon to tell Death Note who is registering it
                     player -> { // A consumer lambda to define what the affliction will do
                         Location loc = player.getLocation();
