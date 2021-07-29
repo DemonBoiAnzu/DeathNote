@@ -6,6 +6,8 @@ Death Note is a minecraft plugin developed for 1.16-1.17+, it introduces a custo
 
 Obviously, this is inspired by the anime Death Note. I only wanted to bring it to life in Minecraft.
 
+This plugin requires a 1.16+ server that's running on Java 16 to function.
+
 ## How to use
 It's simple, just give yourself the Death Note with the command /deathnote give (you can provide a player, as well, if you want)
 
@@ -16,26 +18,30 @@ To use the note, right click normally while holding it, and then you can start t
 There are 3 ways of using it - 
 
 1) simply inputting the players name, they will die of the default affliction - which is a Heart Attack. 
-
 2) Adding 'by' after their name and a cause of death, they will die of that cause if it is valid, if its invalid it will go to the default cause.
-
 3) Adding 'in' after the name, or cause of death, and then a timespan (e.g 10 minutes) the player won't be afflicted until that time passes.
 
 Examples:
 
-Herobrine -> Herobrine will die of a heart attack.
-
-Herobrine in 10 minutes -> Herobrine will die of a heart attack in 10 minutes.
-
-Herobrine by fire -> Herobrine will die of fire.
-
-Herobrine by fire in 10 minutes -> Herobrine will die of fire in 10 minutes.
+1) Herobrine -> Herobrine will die of a heart attack.
+2) Herobrine in 10 minutes -> Herobrine will die of a heart attack in 10 minutes.
+3) Herobrine by fire -> Herobrine will die of fire.
+4) Herobrine by fire in 10 minutes -> Herobrine will die of fire in 10 minutes.
 
 Note: when a player is inflicted, they will not be able to break/place/use anything. Because staying true to the anime, they must die if their name is written in the note. Upon dying, or leaving the server, however, they will no longer be afflicted.
 
 ## Screenshots & other media
 
 Coming soon
+
+## Commands
+There are a small amount of commands that come with this, then being:
+
+1) help -> Shows a list of commands
+2) reload -> Reload the plugin
+3) afflictions -> Open the afflictions gui to view all registered
+4) give -> Give the Death Note to yourself or another player
+5) kills -> View yours or another players kill with the Death Note
 
 ## Resource Pack
 The plugin has it's own resource pack (but, it does not force it) - if you'd like to use it for the custom book texture & gui texture, you can download it [here.]()
@@ -46,6 +52,8 @@ Death Note comes with it's own internal API you can hook into with your own plug
 ### How to use the API
 
 Using the API is simple, first you need to add Death Note as a dependancy to your addon - and as a depend in your plugin.yml.
+
+Side note: you must compile using Java 16
 
 Maven: coming soon
 
@@ -69,7 +77,7 @@ AfflictionManager.register(new Affliction("void", // The ID/Key of the afflictio
                     }));
 ```
 
-And that's it! You can mass-register as well, and don't forget to call `AfflictionManager#refreshAfflictionsBook()` after registering your Afflictions so the Affliction book is updated with your new entries. (this is to prevent it constantly refreshing the book, it should only be refreshed when needed)
+And that's it! Don't forget to call `AfflictionManager#refreshAfflictionsBook()` after registering your Afflictions so the Affliction book is updated with your new entries (this is to prevent it constantly refreshing the book, it should only be refreshed when needed). Remember you can register multiple afflictions at a time.
 
 The above forces the addon to only function if Death Note is present, if it is not, it won't load - however, you can of course make it optional - for instance, if the plugin is present, register your Afflictions, if not, do nothing or whatever else.
 
@@ -91,18 +99,18 @@ public void onEnable() {
     }
   } else {
     getServer().getLogger().info("DeathNote not present, skipping registering custom afflictions.");
-    // Death Note not found
+    // Death Note not found, therefore we don't register afflictions.
   }
 }
 
-Plugin getDeathNotePlugin() {
+private Plugin getDeathNotePlugin() {
   return getPluginManager().getPlugin("DeathNote");
 }
 ```
 
 I do it this way to prevent any errors if the plugin isn't present (this could be useful if your addon isn't strictly just for DeathNote)
 
-If you want to, might also be a good idea to make a Utility function to check if DeathNote is present and enabled, so you can run this check before using anything from DeathNotes api to prevent any errors.
+If you want to, might also be a good idea to make a utility method to check if DeathNote is present and enabled, so you can run this check before using anything from DeathNotes API to prevent any errors.
 
 ```java
 public static boolean isDeathNoteEnabled(){
