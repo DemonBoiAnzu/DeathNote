@@ -48,8 +48,8 @@ public class DeathNoteListener implements Listener {
         if (pages.size() == 0) return;
         List<String> pagesSplit = Arrays.asList(pages.get(pages.size() - 1).split("\n"));
         String page = pagesSplit.get(pagesSplit.size() - 1);
+        if (page.trim().isEmpty()) return;
         List<String> entrySplit = Arrays.asList(page.split("( by | in)"));
-        Util.log("Entry: " + entrySplit);
         if (entrySplit.size() == 0) return;
         String playerEntry = entrySplit.get(0).trim();
         String afflictionEntry = (entrySplit.size() > 1) ? entrySplit.get(1).trim() : "";
@@ -61,6 +61,10 @@ public class DeathNoteListener implements Listener {
         Affliction inputtedAffliction = (!afflictionEntry.equals("")) ? AfflictionManager.getAfflictionByTriggerWord(afflictionEntry) : defaultAffliction;
         if (target == null) {
             Message.TARGET_INVALID.send(player, true, playerEntry);
+            return;
+        }
+        if (target.isDead()) {
+            Message.TARGET_CANT_BE_AFFLICTED.send(player, true);
             return;
         }
         if (entrySplit.size() > 2 && Timespan.parse(entrySplit.get(2).trim()) != -1) {

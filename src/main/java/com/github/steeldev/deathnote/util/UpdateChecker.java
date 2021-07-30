@@ -13,11 +13,9 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
-//https://www.spigotmc.org/resources/better-netherite.84526
-//https://api.spigotmc.org/legacy/update.php?resource=84526
 public class UpdateChecker {
     static DeathNote main = DeathNote.getInstance();
-    public final String resourceLink = "https://www.spigotmc.org/resources/better-netherite.84526/";
+    public final String resourceLink = "hhttps://www.spigotmc.org/resources/death-note.94803/";
     public boolean outdated;
     public String newVersion;
     JavaPlugin plugin;

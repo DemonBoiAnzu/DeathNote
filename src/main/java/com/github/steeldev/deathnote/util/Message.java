@@ -66,6 +66,7 @@ public class Message {
     public static final Message AFFLICTION_UNREGISTERED = get("affliction_unregistered");
 
     public static final Message FEATURE_DISABLED = get("feature_disabled");
+    public static final Message TARGET_CANT_BE_AFFLICTED = get("target_cannot_be_afflicted");
 
 
     // Message code

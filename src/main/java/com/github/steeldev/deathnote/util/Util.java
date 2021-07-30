@@ -2,12 +2,11 @@ package com.github.steeldev.deathnote.util;
 
 import com.github.steeldev.deathnote.DeathNote;
 import com.github.steeldev.deathnote.api.Affliction;
-import com.github.steeldev.monstrorvm.api.items.ItemManager;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -15,8 +14,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +30,7 @@ public class Util {
     private static final String NBTAPI_PREFIX = "&7[&8NBTAPI&7]&r ";
     public static Random rand = new Random();
     public static String[] version;
+    public static NamespacedKey deathNoteKey;
     static DeathNote main = DeathNote.getInstance();
     static Map<Player, Affliction> afflicted = new HashMap<>();
 
@@ -106,10 +109,6 @@ public class Util {
         getMain().getCommand(command).setExecutor(commandExecutor);
     }
 
-    public static boolean monstrorvmEnabled() {
-        return getMain().monstrorvmPlugin != null && getMain().monstrorvmPlugin.isEnabled();
-    }
-
     public static boolean isAfflicted(Player player) {
         return afflicted.containsKey(player);
     }
@@ -123,17 +122,11 @@ public class Util {
         return afflicted.get(player);
     }
 
-    public static String trimEndingWhiteSpace(String input) {
-        return input.replaceAll("\\s+$", "");
-    }
-
     public static boolean isDeathNote(ItemStack item) {
         if (!item.getType().equals(Material.WRITABLE_BOOK)) return false;
-        if (Util.monstrorvmEnabled()) return ItemManager.isMVItem(item, "death_note");
-        else {
-            NBTItem nbtItem = new NBTItem(item);
-            return nbtItem.hasKey("death_note");
-        }
+        if (item.getItemMeta() == null) return false;
+        if (!item.getItemMeta().getPersistentDataContainer().has(deathNoteKey, PersistentDataType.STRING)) return false;
+        return item.getItemMeta().getPersistentDataContainer().get(deathNoteKey, PersistentDataType.STRING).equals("death_note");
     }
 
     // Thanks to ShaneBee for providing these functions

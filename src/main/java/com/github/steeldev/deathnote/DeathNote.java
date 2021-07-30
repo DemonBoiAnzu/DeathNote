@@ -6,11 +6,7 @@ import com.github.steeldev.deathnote.commands.MainCommand;
 import com.github.steeldev.deathnote.listeners.DeathNoteListener;
 import com.github.steeldev.deathnote.managers.PluginAfflictions;
 import com.github.steeldev.deathnote.util.*;
-import com.github.steeldev.monstrorvm.api.items.ItemManager;
-import com.github.steeldev.monstrorvm.api.items.MVItem;
 import com.google.common.collect.Lists;
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -20,8 +16,10 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -32,8 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.github.steeldev.deathnote.util.Util.*;
-import static org.bukkit.Bukkit.getPluginManager;
+import static com.github.steeldev.deathnote.util.Util.colorize;
+import static com.github.steeldev.deathnote.util.Util.getMain;
 
 public class DeathNote extends JavaPlugin {
     private static DeathNote instance;
@@ -74,9 +72,6 @@ public class DeathNote extends JavaPlugin {
             ex.printStackTrace();
         }
 
-
-        MinecraftVersion.replaceLogger(getLogger());
-
         if (!Util.isRunningMinecraft(1, 16)) {
             Util.log("&c&l[&4&lERROR&c&l] Unsupported server version. Death Note only supports 1.16+");
             getServer().getPluginManager().disablePlugin(this);
@@ -85,29 +80,18 @@ public class DeathNote extends JavaPlugin {
 
         loadConfigurations();
         registerEvents();
-        if (loadMonstrorvm() != null) {
-            monstrorvmPlugin = loadMonstrorvm();
-            if (monstrorvmPlugin.isEnabled()) {
-                Message.MONSTRORVM_FOUND.log(monstrorvmPlugin.getDescription().getVersion());
-            } else
-                Message.MONSTRORVM_FOUND_DISABLED.log(monstrorvmPlugin.getDescription().getVersion());
-        } else
-            Message.MONSTRORVM_NOT_FOUND.log();
 
         createDeathNoteItem();
         PluginAfflictions.registerPluginAfflictions();
 
-        //enableMetrics();
+        enableMetrics();
 
         Message.PLUGIN_ENABLED.log(getDescription().getVersion(), (float) (System.currentTimeMillis() - start) / 1000);
 
-        //versionManager = new UpdateChecker(this, 0);
-        //versionManager.checkForNewVersion();
+        versionManager = new UpdateChecker(this, 94803);
+        versionManager.checkForNewVersion();
     }
 
-    public Plugin loadMonstrorvm() {
-        return getPluginManager().getPlugin("Monstrorvm");
-    }
 
     @Override
     public void onDisable() {
@@ -120,19 +104,12 @@ public class DeathNote extends JavaPlugin {
         instance = null;
     }
 
-    public void loadNBTAPI() {
-        Message.LOADING_NBT_API.log();
-        NBTItem loadingItem = new NBTItem(new ItemStack(Material.STONE));
-        loadingItem.addCompound("Glob");
-        loadingItem.setString("Glob", "yes");
-        Message.NBT_API_LOADED.log();
-    }
-
     public void loadConfigurations() {
         config = new Config(this);
     }
 
     void createDeathNoteItem() {
+        Util.deathNoteKey = new NamespacedKey(getMain(), "item_type");
         String deathNoteDisplayName = "<#443c3c>Death Note";
         List<String> deathNoteLore = new ArrayList<String>() {
             {
@@ -142,28 +119,18 @@ public class DeathNote extends JavaPlugin {
                 add("&7Crouch-RMB &c: &7View Afflictions & How to");
             }
         };
-        if (Util.monstrorvmEnabled()) {
-            MVItem deathNote = new MVItem("death_note", Material.WRITABLE_BOOK);
-            deathNote.withDisplayName(deathNoteDisplayName);
-            deathNote.lore = deathNoteLore;
-            deathNote.withCustomModelData(1);
-            ItemManager.registerNewItem(deathNote, getMain());
-        } else {
-            getMain().loadNBTAPI();
-            ItemStack deathNote = new ItemStack(Material.WRITABLE_BOOK);
-            ItemMeta meta = Bukkit.getItemFactory().getItemMeta(deathNote.getType());
-            List<String> lore = new ArrayList<>();
-            for (String line : deathNoteLore) {
-                lore.add(colorize(line));
-            }
-            meta.setLore(lore);
-            meta.setDisplayName(colorize(deathNoteDisplayName));
-            meta.setCustomModelData(1);
-            deathNote.setItemMeta(meta);
-            NBTItem deathNoteNBT = new NBTItem(deathNote);
-            deathNoteNBT.setBoolean("death_note", true);
-            deathNoteItem = deathNoteNBT.getItem();
+        ItemStack deathNote = new ItemStack(Material.WRITABLE_BOOK);
+        ItemMeta meta = Bukkit.getItemFactory().getItemMeta(deathNote.getType());
+        List<String> lore = new ArrayList<>();
+        for (String line : deathNoteLore) {
+            lore.add(colorize(line));
         }
+        meta.setLore(lore);
+        meta.setDisplayName(colorize(deathNoteDisplayName));
+        meta.setCustomModelData(1);
+        meta.getPersistentDataContainer().set(Util.deathNoteKey, PersistentDataType.STRING, "death_note");
+        deathNote.setItemMeta(meta);
+        deathNoteItem = deathNote;
     }
 
     public void createDeathNoteAfflictionsBook() {
@@ -232,8 +199,7 @@ public class DeathNote extends JavaPlugin {
     }
 
     public ItemStack getDeathNoteItem() {
-        if (Util.monstrorvmEnabled()) return ItemManager.getItem("death_note").getItemStack();
-        else return deathNoteItem;
+        return deathNoteItem;
     }
 
     public ItemStack getAfflictionsBook() {
@@ -242,17 +208,10 @@ public class DeathNote extends JavaPlugin {
     }
 
     public void enableMetrics() {
-        Metrics metrics = new Metrics(this, 0);
+        Metrics metrics = new Metrics(this, 12275);
 
         if (metrics.isEnabled()) {
             Message.STARTING_METRICS.log();
-            metrics.addCustomChart(new Metrics.SimplePie("using_monstrorvm", () -> {
-                if (monstrorvmPlugin != null) {
-                    if (monstrorvmPlugin.isEnabled())
-                        return monstrorvmPlugin.getDescription().getVersion();
-                }
-                return "No Monstrorvm";
-            }));
         }
     }
 
