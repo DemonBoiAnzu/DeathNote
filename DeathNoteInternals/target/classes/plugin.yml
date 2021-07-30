@@ -1,0 +1,11 @@
+name: DeathNote
+version: '1.0.0'
+api-version: '1.16'
+main: com.github.steeldev.deathnote.DeathNote
+description: A plugin that brings a recreation of the book from the anime, Death Note
+author: Steel_Dev
+softdepend: [ Monstrorvm ]
+permissions:
+  deathnote.admin:
+    description: Allows the user administrator permissions for Death Note.
+    default: op

@@ -402,7 +402,6 @@ public class PluginAfflictions {
                         }.runTaskLater(getMain(), 150);
                     }));
         } else unregister("archangels_fury");
-
         AfflictionManager.refreshAfflictionsBook();
         Message.DEFAULTS_REGISTERED.log();
     }

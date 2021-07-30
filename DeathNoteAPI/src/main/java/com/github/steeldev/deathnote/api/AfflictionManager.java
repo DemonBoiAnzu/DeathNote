@@ -1,14 +1,6 @@
 package com.github.steeldev.deathnote.api;
 
-import com.github.steeldev.deathnote.util.Message;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.github.steeldev.deathnote.util.Util.getMain;
-import static com.github.steeldev.deathnote.util.Util.rand;
+import java.util.*;
 
 /**
  * The main manager class for Afflictions.
@@ -30,7 +22,6 @@ public class AfflictionManager {
         for (Affliction affliction : afflictions) {
             register(affliction);
         }
-        refreshAfflictionsBook();
     }
 
     /**
@@ -48,9 +39,6 @@ public class AfflictionManager {
             if (affliction.getRegisteredBy().equals(tempAff.getRegisteredBy()))
                 registry.replace(affliction.getKey(), affliction);
         } else registry.put(affliction.getKey(), affliction);
-
-        if (affliction.getRegisteredBy() != getMain() && getMain().config.DEBUG)
-            Message.AFFLICTION_REGISTERED.log(affliction.getDisplay(), affliction.getRegisteredBy().getName());
     }
 
     /**
@@ -60,20 +48,8 @@ public class AfflictionManager {
      */
     public static void unregister(String key) {
         if (isAfflictionRegistered(key)) {
-            if (getMain().config.DEBUG) {
-                Affliction affliction = get(key);
-                if (affliction.getRegisteredBy() != getMain())
-                    Message.AFFLICTION_UNREGISTERED.log(affliction.getDisplay());
-            }
             registry.remove(key);
         }
-    }
-
-    /**
-     * Refresh the afflictions book
-     */
-    public static void refreshAfflictionsBook() {
-        getMain().createDeathNoteAfflictionsBook();
     }
 
     /**
@@ -104,8 +80,6 @@ public class AfflictionManager {
      * @return Affliction that has the inputted trigger, if none found, then null
      */
     public static Affliction getAfflictionByTriggerWord(String trigger) {
-        if (trigger.equalsIgnoreCase("random") && getMain().config.RANDOM_AFFLICTION_ENABLED)
-            return getRegistered().get(rand.nextInt(getRegistered().size()));
         for (Affliction affliction : getRegistered()) {
             if (affliction.getTriggers().contains(trigger))
                 return affliction;
