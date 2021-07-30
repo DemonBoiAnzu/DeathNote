@@ -74,8 +74,6 @@ Death Note comes with it's own internal API you can hook into with your own plug
 
 Using the API is simple, first you need to add Death Note as a dependancy to your addon - and as a depend in your plugin.yml.
 
-Side note: you must compile using Java 16
-
 First, you need the jitpack repo
 
 Maven:
@@ -94,6 +92,8 @@ Maven:
   <scope>provided</scope>
 </dependency>
 ```
+
+The `provided` scope is NEEDED.
 
 Gradle:
 ```
