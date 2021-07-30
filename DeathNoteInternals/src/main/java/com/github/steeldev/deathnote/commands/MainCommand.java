@@ -105,7 +105,7 @@ public class MainCommand {
         }
     }
 
-    @Subcommand("uninflict")
+    @Subcommand("unafflict")
     public static void uninflict(CommandSender sender){
         if (!(sender instanceof Player)) {
             Message.ONLY_PLAYERS_CAN_EXECUTE.send(sender, true);
@@ -114,7 +114,7 @@ public class MainCommand {
         uninflict(sender,(Player) sender);
     }
 
-    @Subcommand("uninflict")
+    @Subcommand("unafflict")
     public static void uninflict(CommandSender sender, @APlayerArgument Player player){
         if (player == null) {
             Message.INVALID_PLAYER.send(sender, true);
