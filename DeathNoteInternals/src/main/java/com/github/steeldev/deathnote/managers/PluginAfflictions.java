@@ -14,9 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.github.steeldev.deathnote.util.Util.*;
-
 import static com.github.steeldev.deathnote.api.AfflictionManager.*;
+import static com.github.steeldev.deathnote.util.Util.*;
 
 public class PluginAfflictions {
     public static void registerPluginAfflictions() {

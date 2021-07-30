@@ -1,5 +1,7 @@
 package com.github.steeldev.deathnote.api;
 
+import com.github.steeldev.deathnote.api.events.AfflictionTriggeredEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -118,6 +120,9 @@ public class Affliction {
      * @param target The target player to execute on
      */
     public void execute(Player target) {
+        AfflictionTriggeredEvent afflictionTriggeredEvent = new AfflictionTriggeredEvent(this);
+        Bukkit.getServer().getPluginManager().callEvent(afflictionTriggeredEvent);
+        if (afflictionTriggeredEvent.isCancelled()) return;
         afflictionAction.accept(target);
     }
 }

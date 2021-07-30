@@ -2,6 +2,9 @@ package com.github.steeldev.deathnote.listeners;
 
 import com.github.steeldev.deathnote.api.Affliction;
 import com.github.steeldev.deathnote.api.AfflictionManager;
+import com.github.steeldev.deathnote.api.events.AfflictionRegisteredEvent;
+import com.github.steeldev.deathnote.api.events.AfflictionTriggeredEvent;
+import com.github.steeldev.deathnote.api.events.AfflictionUnregisteredEvent;
 import com.github.steeldev.deathnote.util.Database;
 import com.github.steeldev.deathnote.util.Message;
 import com.github.steeldev.deathnote.util.Timespan;
@@ -34,6 +37,21 @@ import static com.github.steeldev.deathnote.util.Util.*;
 
 public class DeathNoteListener implements Listener {
     @EventHandler
+    public void afflictionRegistered(AfflictionRegisteredEvent event) {
+        Affliction affliction = event.getRegisteredAffliction();
+        if (!affliction.getRegisteredBy().equals(getMain()))
+            Message.AFFLICTION_REGISTERED.log(affliction.getDisplay(), affliction.getRegisteredBy().getName());
+        getMain().createDeathNoteAfflictionsBook();
+    }
+
+    @EventHandler
+    public void afflictionUnregistered(AfflictionUnregisteredEvent event) {
+        Affliction affliction = event.getUnregisteredAffliction();
+        if (!affliction.getRegisteredBy().equals(getMain()))
+            Message.AFFLICTION_UNREGISTERED.log(affliction.getDisplay());
+    }
+
+    @EventHandler
     public void bookEdit(PlayerEditBookEvent event) {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
@@ -58,7 +76,13 @@ public class DeathNoteListener implements Listener {
 
         Player target = Bukkit.getServer().getPlayer(playerEntry);
         Affliction defaultAffliction = AfflictionManager.getDefaultAffliction();
-        Affliction inputtedAffliction = (!afflictionEntry.equals("")) ? AfflictionManager.getAfflictionByTriggerWord(afflictionEntry) : defaultAffliction;
+        Affliction inputtedAffliction;
+        if (!afflictionEntry.equals("")) {
+            if (afflictionEntry.equalsIgnoreCase("random"))
+                inputtedAffliction = AfflictionManager.getRandomAffliction();
+            else
+                inputtedAffliction = AfflictionManager.getAfflictionByTriggerWord(afflictionEntry);
+        } else inputtedAffliction = defaultAffliction;
         if (target == null) {
             Message.TARGET_INVALID.send(player, true, playerEntry);
             return;
@@ -94,6 +118,13 @@ public class DeathNoteListener implements Listener {
         }
 
         Affliction finalInputtedAffliction = inputtedAffliction;
+        AfflictionTriggeredEvent afflictionTriggeredEvent = new AfflictionTriggeredEvent(finalInputtedAffliction);
+        Bukkit.getServer().getPluginManager().callEvent(afflictionTriggeredEvent);
+        if (afflictionTriggeredEvent.isCancelled()) {
+            Message.TARGET_CANT_BE_AFFLICTED.send(player, true);
+            return;
+        }
+
         if (getMain().config.DEBUG)
             Util.log(String.format("&7[DEBUG] &e%s &rhas been set to be afflicted by &7%s &rin &e%d ticks &rby &e%s&r.", target.getName(), inputtedAffliction.getDisplay(), time, player.getName()));
         new BukkitRunnable() {
@@ -118,7 +149,6 @@ public class DeathNoteListener implements Listener {
             }
         }.runTaskLater(getMain(), time);
         setAfflicted(target, null);
-        if (!target.isDead()) defaultAffliction.execute(target);
         if (getMain().config.TRACK_KILLS) {
             try {
                 DNPlayerData data = Database.getPlayerData(player);
@@ -128,6 +158,7 @@ public class DeathNoteListener implements Listener {
                 ex.printStackTrace();
             }
         }
+
     }
 
     @EventHandler

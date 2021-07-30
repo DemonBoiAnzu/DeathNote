@@ -1,5 +1,9 @@
 package com.github.steeldev.deathnote.api;
 
+import com.github.steeldev.deathnote.api.events.AfflictionRegisteredEvent;
+import com.github.steeldev.deathnote.api.events.AfflictionUnregisteredEvent;
+import org.bukkit.Bukkit;
+
 import java.util.*;
 
 /**
@@ -34,6 +38,8 @@ public class AfflictionManager {
      * @param affliction Affliction to register
      */
     public static void register(Affliction affliction) {
+        AfflictionRegisteredEvent afflictionRegisteredEvent = new AfflictionRegisteredEvent(affliction);
+        Bukkit.getServer().getPluginManager().callEvent(afflictionRegisteredEvent);
         if (registry.containsKey(affliction.getKey())) {
             Affliction tempAff = get(affliction.getKey());
             if (affliction.getRegisteredBy().equals(tempAff.getRegisteredBy()))
@@ -48,6 +54,9 @@ public class AfflictionManager {
      */
     public static void unregister(String key) {
         if (isAfflictionRegistered(key)) {
+            Affliction tempAffliction = get(key);
+            AfflictionUnregisteredEvent afflictionUnregisteredEvent = new AfflictionUnregisteredEvent(tempAffliction);
+            Bukkit.getServer().getPluginManager().callEvent(afflictionUnregisteredEvent);
             registry.remove(key);
         }
     }
@@ -85,6 +94,16 @@ public class AfflictionManager {
                 return affliction;
         }
         return null;
+    }
+
+    /**
+     * Get a random out of all registered afflictions
+     *
+     * @return Random affliction
+     */
+    public static Affliction getRandomAffliction() {
+        Random random = new Random();
+        return getRegistered().get(random.nextInt(getRegistered().size()));
     }
 
     /**
