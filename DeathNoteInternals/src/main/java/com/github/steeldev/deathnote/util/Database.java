@@ -11,7 +11,7 @@ public class Database {
     static Connection dbConnection;
 
     public static void getConnection() throws SQLException {
-        dbConnection = DriverManager.getConnection(String.format("jdbc:sqlite:%s/DeathNote.db", getMain().getDataFolder()));
+        dbConnection = DriverManager.getConnection(String.format("jdbc:sqlite:%s\\DeathNote.db", getMain().getDataFolder()));
     }
 
     public static void closeConnection() throws SQLException {

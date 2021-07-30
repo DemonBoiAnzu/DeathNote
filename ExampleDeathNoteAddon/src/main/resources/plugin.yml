@@ -1,0 +1,8 @@
+name: ExampleDeathNoteAddon
+version: '${project.version}'
+api-version: '1.16'
+main: com.github.steeldev.deathnote.example.ExampleDeathNoteAddon
+description: An example addon for my plugin, Death Note.
+author: Steel_Dev
+depend:
+  - DeathNote

@@ -12,6 +12,7 @@
     <modules>
         <module>DeathNoteInternals</module>
         <module>DeathNoteAPI</module>
+        <module>ExampleDeathNoteAddon</module>
     </modules>
 
     <build>
