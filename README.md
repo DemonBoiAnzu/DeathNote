@@ -74,8 +74,6 @@ Death Note comes with it's own internal API you can hook into with your own plug
 
 Using the API is simple, first you need to add Death Note as a dependancy to your addon - and as a depend in your plugin.yml.
 
-Side note: you must compile using Java 16
-
 First, you need the jitpack repo
 
 Maven:
@@ -88,12 +86,14 @@ Maven:
 
 ```xml
 <dependency>
-  <groupId>com.github.Steel-Dev</groupId>
-  <artifactId>DeathNote</artifactId>
+  <groupId>com.github.Steel-Dev.DeathNote</groupId>
+  <artifactId>DeathNoteAPI</artifactId>
   <version>VERSION</version>
   <scope>provided</scope>
 </dependency>
 ```
+
+The `provided` scope is NEEDED.
 
 Gradle:
 ```
@@ -107,7 +107,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation 'com.github.Steel-Dev:DeathNote:VERSION'
+  implementation 'com.github.Steel-Dev.DeathNote:DeathNoteAPI:VERSION'
 }
 ```
 
