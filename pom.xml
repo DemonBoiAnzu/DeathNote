@@ -6,6 +6,7 @@
 
     <groupId>com.github.steeldev.deathnote</groupId>
     <artifactId>DeathNote</artifactId>
+    <packaging>pom</packaging>
     <version>1.0.0</version>
 
     <build>
@@ -70,6 +71,9 @@
             </plugin>
         </plugins>
     </build>
+    <modules>
+        <module>API</module>
+    </modules>
 
     <pluginRepositories>
         <pluginRepository>
@@ -93,6 +97,11 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>com.github.steeldev.deathnote</groupId>
+            <artifactId>DeathNoteAPI</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <dependency>
             <groupId>xyz.upperlevel.spigot.book</groupId>
             <artifactId>spigot-book-api</artifactId>

@@ -37,8 +37,11 @@
           <entry name="$MAVEN_REPOSITORY$/dev/jorel/CommandAPI/commandapi-preprocessor/6.1.0/commandapi-preprocessor-6.1.0.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/spigotmc/spigot-api/1.16.5-R0.1-SNAPSHOT/spigot-api-1.16.5-R0.1-SNAPSHOT.jar" />
         </processorPath>
-        <module name="DeathNote" />
+        <module name="DeathNoteAPI" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="DeathNoteAPI" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
