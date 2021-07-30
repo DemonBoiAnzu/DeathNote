@@ -68,6 +68,11 @@ public class Message {
     public static final Message FEATURE_DISABLED = get("feature_disabled");
     public static final Message TARGET_CANT_BE_AFFLICTED = get("target_cannot_be_afflicted");
 
+    public static final Message UNINFLICTED = get("uninflicted");
+    public static final Message UNINFLICTED_PLAYER = get("uninflicted_player");
+
+    public static final Message NOT_INFLICTED = get("not_afflicted");
+    public static final Message PLAYER_NOT_INFLICTED = get("player_not_afflicted");
 
     // Message code
     private final String message;
