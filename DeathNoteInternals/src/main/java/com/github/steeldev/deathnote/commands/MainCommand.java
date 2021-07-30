@@ -1,6 +1,5 @@
 package com.github.steeldev.deathnote.commands;
 
-import com.github.steeldev.deathnote.api.AfflictionManager;
 import com.github.steeldev.deathnote.managers.PluginAfflictions;
 import com.github.steeldev.deathnote.util.Database;
 import com.github.steeldev.deathnote.util.Message;
@@ -21,7 +20,7 @@ import static com.github.steeldev.deathnote.util.Util.getMain;
 @Permission("deathnote.admin")
 public class MainCommand {
     @Default
-    public static void deathnote(CommandSender sender){
+    public static void deathnote(CommandSender sender) {
         help(sender);
     }
 
@@ -33,7 +32,7 @@ public class MainCommand {
         Util.sendMessage(sender, "&7- &rafflictions &8- &7list all registered afflictions");
         Util.sendMessage(sender, "&7- &rgive [<player>] &8- &7give the death note to yourself or another player");
         Util.sendMessage(sender, "&7- &rkills [<player>] &8- &7view how many kills you or another player has with the death note");
-        Util.sendMessage(sender, "&7- &runinflict [<player>] &8- &7uninflict yourself or another player. (will not cancel ongoing afflictions, mainly just allows the player to break/place/use again)");
+        Util.sendMessage(sender, "&7- &runafflict [<player>] &8- &7unafflict yourself or another player. (will not cancel ongoing afflictions, mainly just allows the player to break/place/use again)");
     }
 
     @Subcommand("reload")
@@ -50,7 +49,7 @@ public class MainCommand {
             Message.MUST_PROVIDE_PLAYER.send(sender, true);
             return;
         }
-        give(sender,(Player)sender);
+        give(sender, (Player) sender);
     }
 
     @Subcommand("give")
@@ -59,7 +58,7 @@ public class MainCommand {
             Message.INVALID_PLAYER.send(sender, true);
             return;
         }
-        if(!sender.equals(target))
+        if (!sender.equals(target))
             Message.GAVE_NOTE_TO_PLAYER.send(sender, true, target.getName());
         Message.DEATH_NOTE_RECEIVED.send(target, false);
         target.getInventory().addItem(getMain().getDeathNoteItem());
@@ -106,31 +105,31 @@ public class MainCommand {
     }
 
     @Subcommand("unafflict")
-    public static void uninflict(CommandSender sender){
+    public static void uninflict(CommandSender sender) {
         if (!(sender instanceof Player)) {
             Message.ONLY_PLAYERS_CAN_EXECUTE.send(sender, true);
             return;
         }
-        uninflict(sender,(Player) sender);
+        uninflict(sender, (Player) sender);
     }
 
     @Subcommand("unafflict")
-    public static void uninflict(CommandSender sender, @APlayerArgument Player player){
+    public static void uninflict(CommandSender sender, @APlayerArgument Player player) {
         if (player == null) {
             Message.INVALID_PLAYER.send(sender, true);
             return;
         }
-        if(Util.getPlayerAffliction(player) == null) {
-            if(sender.equals(player))
+        if (Util.getPlayerAffliction(player) == null) {
+            if (sender.equals(player))
                 Message.NOT_INFLICTED.send(player, true);
             else
-                Message.PLAYER_NOT_INFLICTED.send(sender,true,player.getName());
+                Message.PLAYER_NOT_INFLICTED.send(sender, true, player.getName());
             return;
         }
-        if(!sender.equals(player))
-            Message.UNINFLICTED_PLAYER.send(sender,true,player.getName());
-        Message.UNINFLICTED.send(player,true);
-        Util.setAfflicted(player,null);
+        if (!sender.equals(player))
+            Message.UNINFLICTED_PLAYER.send(sender, true, player.getName());
+        Message.UNINFLICTED.send(player, true);
+        Util.setAfflicted(player, null);
     }
 
     @Subcommand("afflictions")

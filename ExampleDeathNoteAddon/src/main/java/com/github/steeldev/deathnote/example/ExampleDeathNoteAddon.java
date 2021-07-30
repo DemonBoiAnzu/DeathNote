@@ -11,28 +11,28 @@ import java.util.Random;
 
 public class ExampleDeathNoteAddon extends JavaPlugin {
     @Override
-    public void onEnable(){
+    public void onEnable() {
         AfflictionManager.register(new Affliction("globber",
                 "&6Globber",
                 Arrays.asList("globber", "glob"),
                 "The target will be globbered.",
                 "was globbered to death",
                 this,
-                player ->{
+                player -> {
                     Random random = new Random();
-                    new BukkitRunnable(){
+                    new BukkitRunnable() {
                         @Override
                         public void run() {
                             int velY = random.nextInt(4);
                             int r = random.nextInt(2);
-                            if(r == 1) velY = -velY;
-                            player.setVelocity(new Vector(0,velY,0));
+                            if (r == 1) velY = -velY;
+                            player.setVelocity(new Vector(0, velY, 0));
                             player.damage(1);
 
-                            if(player.isDead())
+                            if (player.isDead())
                                 this.cancel();
                         }
-                    }.runTaskTimer(this,0,10);
+                    }.runTaskTimer(this, 0, 10);
                 }));
     }
 }
