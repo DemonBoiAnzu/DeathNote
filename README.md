@@ -88,8 +88,8 @@ Maven:
 
 ```xml
 <dependency>
-  <groupId>com.github.Steel-Dev</groupId>
-  <artifactId>DeathNote</artifactId>
+  <groupId>com.github.Steel-Dev.DeathNote</groupId>
+  <artifactId>DeathNoteAPI</artifactId>
   <version>VERSION</version>
   <scope>provided</scope>
 </dependency>
@@ -107,7 +107,7 @@ allprojects {
 
 ```
 dependencies {
-  implementation 'com.github.Steel-Dev:DeathNote:VERSION'
+  implementation 'com.github.Steel-Dev.DeathNote:DeathNoteAPI:VERSION'
 }
 ```
 
