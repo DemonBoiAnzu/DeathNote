@@ -2,7 +2,7 @@
 
 # DeathNote
 
-Death Note is a minecraft plugin developed for 1.16-1.17+, it introduces a custom item that allows users to input another player's name and that player will die. Additionally, they can provide a time of death, along with a cause of death.
+Death Note is a minecraft plugin developed for 1.16-1.17+, it introduces a custom item that allows users to input another player's name and kill them. Additionally, they can provide a time of death, along with a cause of death.
 
 Obviously, this is inspired by the anime Death Note. I only wanted to bring it to life in Minecraft.
 
@@ -136,11 +136,6 @@ public static boolean isDeathNoteEnabled(){
   return MAINHERE.deathNotePlugin != null && MAINHERE.deathNotePlugin.isEnabled();
 }
 ```
-
-## Don't want to use Java? no worries!
-
-My buddy, Jay/Ankoki will be implementing skript into Death Note, so you can register your afflictions using skript! (Not implemented yet!)
-
 
 
 Happy death-writing! ~ Steel/Abraxas
