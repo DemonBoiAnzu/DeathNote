@@ -37,7 +37,6 @@ public class DeathNote extends JavaPlugin {
     private static DeathNote instance;
     public Config config = null;
     public UpdateChecker versionManager;
-    public Plugin monstrorvmPlugin;
     public Logger logger;
     ItemStack deathNoteItem;
     ItemStack afflictionsBook;

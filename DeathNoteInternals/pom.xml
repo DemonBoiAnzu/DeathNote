@@ -14,7 +14,7 @@
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
-        <finalName>${project.name}-${project.version}</finalName>
+        <finalName>DeathNote-${project.version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -60,7 +60,10 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>com.github.steeldev.deathnote.util.com.github.steeldev.deathnote.api.bStats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.github.steeldev.deathnote:DeathNoteAPI</pattern>
+                            <shadedPattern>com.github.steeldev.deathnote.api</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>dev.jorel.commandapi-shade</pattern>
@@ -110,7 +113,6 @@
             <groupId>com.github.steeldev.deathnote</groupId>
             <artifactId>DeathNoteAPI</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

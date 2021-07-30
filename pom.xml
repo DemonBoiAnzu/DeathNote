@@ -16,39 +16,6 @@
 
     <build>
         <finalName>${project.name}-${project.version}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <id>shade</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>com.github.steeldev.deathnote.api</pattern>
-                            <shadedPattern>com.github.steeldev.deathnote.shaded.api</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>com.github.steeldev.deathnote</pattern>
-                            <shadedPattern>com.github.steeldev.deathnote.shaded.internals</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 
     <pluginRepositories>
