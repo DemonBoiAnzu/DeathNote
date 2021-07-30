@@ -129,8 +129,6 @@ AfflictionManager.register(new Affliction("void", // The ID/Key of the afflictio
                     }));
 ```
 
-And that's it! Don't forget to call `AfflictionManager#refreshAfflictionsBook()` after registering your Afflictions so the Affliction book is updated with your new entries (this is to prevent it constantly refreshing the book, it should only be refreshed when needed). Remember you can register multiple afflictions at a time.
-
 The above forces the addon to only function if Death Note is present if done without the below, if it is not, it won't load - however, you can of course make it optional - for instance, if the plugin is present, register your Afflictions, if not, do nothing or whatever else.
 
 Usually, I do it this way in my main class:
