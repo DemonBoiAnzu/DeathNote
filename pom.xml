@@ -9,70 +9,9 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
-    <build>
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <finalName>${project.name}-${project.version}</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <targetPath>.</targetPath>
-                <includes>
-                    <include>plugin.yml</include>
-                    <include>Config.yml</include>
-                    <include>Messages.properties</include>
-                    <include>Messages_EN_US.properties</include>
-                </includes>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>dev.jorel.CommandAPI</groupId>
-                            <artifactId>commandapi-annotations</artifactId>
-                            <version>6.1.0</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <id>shade</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
-                            <shadedPattern>com.github.steeldev.deathnote.util.api.NBT</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.bstats</pattern>
-                            <shadedPattern>com.github.steeldev.deathnote.util.api.bStats</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>dev.jorel.commandapi-shade</pattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <modules>
-        <module>API</module>
+        <module>DeathNoteInternals</module>
+        <module>DeathNoteAPI</module>
     </modules>
 
     <pluginRepositories>
@@ -98,43 +37,10 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>com.github.steeldev.deathnote</groupId>
-            <artifactId>DeathNoteAPI</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>xyz.upperlevel.spigot.book</groupId>
-            <artifactId>spigot-book-api</artifactId>
-            <version>1.5</version>
-        </dependency>
-        <dependency>
-            <groupId>dev.jorel.CommandAPI</groupId>
-            <artifactId>commandapi-shade</artifactId>
-            <version>6.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>dev.jorel.CommandAPI</groupId>
-            <artifactId>commandapi-annotations</artifactId>
-            <version>6.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>1.7</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

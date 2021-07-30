@@ -2,6 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="DeathNoteAPI" />
+      </profile>
       <profile name="Annotation profile for DeathNote" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -37,11 +43,8 @@
           <entry name="$MAVEN_REPOSITORY$/dev/jorel/CommandAPI/commandapi-preprocessor/6.1.0/commandapi-preprocessor-6.1.0.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/spigotmc/spigot-api/1.16.5-R0.1-SNAPSHOT/spigot-api-1.16.5-R0.1-SNAPSHOT.jar" />
         </processorPath>
-        <module name="DeathNoteAPI" />
+        <module name="DeathNoteInternals" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="DeathNoteAPI" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
