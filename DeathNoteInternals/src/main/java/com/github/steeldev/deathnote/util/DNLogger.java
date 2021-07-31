@@ -13,7 +13,6 @@ public class DNLogger extends Logger {
 
     @Override
     public void info(String msg) {
-        String prefix = msg.replace("[NBTAPI]", Util.getNbtapiPrefix());
-        Util.log(prefix);
+        Util.log(msg);
     }
 }

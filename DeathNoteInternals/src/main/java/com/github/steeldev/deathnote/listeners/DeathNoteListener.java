@@ -49,6 +49,7 @@ public class DeathNoteListener implements Listener {
         Affliction affliction = event.getUnregisteredAffliction();
         if (!affliction.getRegisteredBy().equals(getMain()))
             Message.AFFLICTION_UNREGISTERED.log(affliction.getDisplay());
+        getMain().createDeathNoteAfflictionsBook();
     }
 
     @EventHandler
@@ -78,7 +79,7 @@ public class DeathNoteListener implements Listener {
         Affliction defaultAffliction = AfflictionManager.getDefaultAffliction();
         Affliction inputtedAffliction;
         if (!afflictionEntry.equals("")) {
-            if (afflictionEntry.equalsIgnoreCase("random"))
+            if (afflictionEntry.equalsIgnoreCase("random") && getMain().config.RANDOM_AFFLICTION_ENABLED)
                 inputtedAffliction = AfflictionManager.getRandomAffliction();
             else
                 inputtedAffliction = AfflictionManager.getAfflictionByTriggerWord(afflictionEntry);
@@ -158,7 +159,6 @@ public class DeathNoteListener implements Listener {
                 ex.printStackTrace();
             }
         }
-
     }
 
     @EventHandler
@@ -191,6 +191,7 @@ public class DeathNoteListener implements Listener {
         player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, SoundCategory.MASTER, 1, 1);
         if (player.isSneaking()) {
             event.setCancelled(true);
+            getMain().createDeathNoteAfflictionsBook();
             BookUtil.openPlayer(player, getMain().getAfflictionsBook());
         }
     }
@@ -246,7 +247,7 @@ public class DeathNoteListener implements Listener {
     }
 
     @EventHandler
-    public void playerChat(AsyncPlayerChatEvent event) {
+    public void playerChat(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         if (isAfflicted(player)) event.setCancelled(true);
     }

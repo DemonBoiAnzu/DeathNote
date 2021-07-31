@@ -27,7 +27,6 @@ import static net.md_5.bungee.api.chat.TextComponent.fromLegacyText;
 public class Util {
     private static final Pattern HEX_PATTERN = Pattern.compile("<#([A-Fa-f0-9]){6}>");
     private static final String PREFIX = "&7[&8DeathNote&7]&r ";
-    private static final String NBTAPI_PREFIX = "&7[&8NBTAPI&7]&r ";
     public static Random rand = new Random();
     public static String[] version;
     public static NamespacedKey deathNoteKey;
@@ -57,10 +56,6 @@ public class Util {
 
     public static boolean chanceOf(float chance) {
         return rand.nextFloat() < chance;
-    }
-
-    public static String getNbtapiPrefix() {
-        return NBTAPI_PREFIX;
     }
 
     public static void log(String log) {

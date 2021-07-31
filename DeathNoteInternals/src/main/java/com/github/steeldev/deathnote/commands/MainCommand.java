@@ -29,7 +29,6 @@ public class MainCommand {
         Util.sendMessage(sender, "&rValid &7Death Note &rsub-commands:");
         Util.sendMessage(sender, "&7- &rhelp &8- &7shows this");
         Util.sendMessage(sender, "&7- &rreload &8- &7reload plugins configurations");
-        Util.sendMessage(sender, "&7- &rafflictions &8- &7list all registered afflictions");
         Util.sendMessage(sender, "&7- &rgive [<player>] &8- &7give the death note to yourself or another player");
         Util.sendMessage(sender, "&7- &rkills [<player>] &8- &7view how many kills you or another player has with the death note");
         Util.sendMessage(sender, "&7- &runafflict [<player>] &8- &7unafflict yourself or another player. (will not cancel ongoing afflictions, mainly just allows the player to break/place/use again)");
@@ -130,14 +129,5 @@ public class MainCommand {
             Message.UNINFLICTED_PLAYER.send(sender, true, player.getName());
         Message.UNINFLICTED.send(player, true);
         Util.setAfflicted(player, null);
-    }
-
-    @Subcommand("afflictions")
-    public static void afflictins(CommandSender sender) {
-        if (!(sender instanceof Player)) {
-            Message.ONLY_PLAYERS_CAN_EXECUTE.send(sender, true);
-            return;
-        }
-        BookUtil.openPlayer((Player) sender, getMain().getAfflictionsBook());
     }
 }
