@@ -56,11 +56,11 @@ The afflictions list (default afflictions that come with the plugin)
 ## Commands
 There are a small amount of commands that come with this, then being:
 
-1) help -> Shows a list of commands
-2) reload -> Reload the plugin
-3) afflictions -> Open the afflictions gui to view all registered
-4) give -> Give the Death Note to yourself or another player
-5) kills -> View yours or another players kill with the Death Note
+1) /deathnote - View list of commands. (/deathnote help does same)
+2) /deathnote reload - Reload configuration.
+3) /deathnote give [<player>] - Give the note to yourself, or optionally another player.
+4) /deathnote kills [<player>] - View yours or another players kills with the Death Note. (This can be disabled)
+5) /deathnote unafflict [<player>] - Unafflict yourself or another player - this does not cancel ongoing afflictions. It is mainly for if the target doesnt die so they will be able to interact with the world again.
 
 ## Resource Pack
 The plugin has it's own resource pack (but, it does not force it) - if you'd like to use it for the custom book texture & gui texture, you can download it [here.](https://www.dropbox.com/s/0gg58qu43abfxj4/DeathNote_ResourcePack.zip?dl=1)
