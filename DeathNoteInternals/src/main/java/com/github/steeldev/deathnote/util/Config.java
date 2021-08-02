@@ -33,7 +33,8 @@ public class Config {
     public boolean COW_AFFLICTION_ENABLED;
     public boolean LAVA_AFFLICTION_ENABLED;
     public boolean PIG_AFFLICTION_ENABLED;
-    public boolean ARCHANGELS_FURY_AFFLICTIONS_ENABLED;
+    public boolean ARCHANGELS_FURY_AFFLICTION_ENABLED;
+    public boolean NAIR_AFFLICTION_ENABLED;
 
 
     private FileConfiguration config;
@@ -118,6 +119,7 @@ public class Config {
         COW_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Cow");
         LAVA_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Lava");
         PIG_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Pig");
-        ARCHANGELS_FURY_AFFLICTIONS_ENABLED = config.getBoolean("Afflictions.ArchangelsFury");
+        ARCHANGELS_FURY_AFFLICTION_ENABLED = config.getBoolean("Afflictions.ArchangelsFury");
+        NAIR_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Nair");
     }
 }

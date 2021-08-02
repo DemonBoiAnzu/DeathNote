@@ -24,6 +24,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import xyz.upperlevel.spigot.book.BookUtil;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,17 +65,19 @@ public class DeathNote extends JavaPlugin {
         CommandAPI.onEnable(this);
         CommandAPI.registerCommand(MainCommand.class);
 
-        try {
-            Database.getConnection();
-            Database.create();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
         if (!Util.isRunningMinecraft(1, 16)) {
             Util.log("&c&l[&4&lERROR&c&l] Unsupported server version. Death Note only supports 1.16+");
             getServer().getPluginManager().disablePlugin(this);
             return;
+        }
+
+        try {
+            if (!Files.exists(getDataFolder().toPath()))
+                Files.createDirectory(getDataFolder().toPath());
+            Database.getConnection();
+            Database.create();
+        } catch (SQLException | IOException ex) {
+            ex.printStackTrace();
         }
 
         loadConfigurations();
@@ -170,12 +174,12 @@ public class DeathNote extends JavaPlugin {
 
                 StringBuilder hoverT = new StringBuilder(affliction.getDisplay() + "\n&7Triggers &8| &r" + affliction.getTriggers());
                 if (!affliction.getDescription().isEmpty())
-                    hoverT.append("\n&7Description &8| &r" + affliction.getDescription());
+                    hoverT.append("\n&7Description &8| &r").append(affliction.getDescription());
 
-                hoverT.append("\n\n&7Usage Example &8| &rHerobrine by " + affliction.getTriggers().get(0));
+                hoverT.append("\n\n&7Usage Example &8| &rHerobrine by ").append(affliction.getTriggers().get(0));
 
                 if (!affliction.getRegisteredBy().equals(getMain()))
-                    hoverT.append("\n\n&7From &8| &r" + affliction.getRegisteredBy().getName());
+                    hoverT.append("\n\n&7From &8| &r").append(affliction.getRegisteredBy().getName());
 
                 if (AfflictionManager.getDefaultAffliction().equals(affliction))
                     hoverT.append("\n\n&7&oDefault Affliction");

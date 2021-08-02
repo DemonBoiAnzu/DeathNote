@@ -1,2 +1,5 @@
 */target
 */dependency-reduced-pom.xml
+*/server
+.idea/*
+moveplugin.sh

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>DeathNote</artifactId>
         <groupId>com.github.steeldev.deathnote</groupId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -110,7 +110,7 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.steeldev.deathnote</groupId>
+            <groupId>com.github.Steel-Dev.DeathNote</groupId>
             <artifactId>DeathNoteAPI</artifactId>
             <version>1.1.0</version>
         </dependency>

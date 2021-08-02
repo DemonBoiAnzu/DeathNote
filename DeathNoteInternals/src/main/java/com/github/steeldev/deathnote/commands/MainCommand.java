@@ -9,7 +9,6 @@ import dev.jorel.commandapi.annotations.*;
 import dev.jorel.commandapi.annotations.arguments.APlayerArgument;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import xyz.upperlevel.spigot.book.BookUtil;
 
 import java.sql.SQLException;
 

@@ -14,11 +14,11 @@ import java.util.function.Consumer;
 public class Affliction {
     private final String key;
     private final String display;
-    private final String description;
     private final List<String> triggers;
-    private final Consumer<Player> afflictionAction;
-    private final String deathMessage;
     private final Plugin registeredBy;
+    private String description;
+    private Consumer<Player> afflictionAction;
+    private String deathMessage;
     private boolean enabled;
 
     /**
@@ -40,6 +40,66 @@ public class Affliction {
         this.deathMessage = deathMessage;
         this.afflictionAction = afflictionAction;
         this.registeredBy = registeredBy;
+    }
+
+    /**
+     * Create a new Affliction object without an action (must use #setAfflictionAction)
+     *
+     * @param key          The key
+     * @param display      The display
+     * @param triggers     The triggers
+     * @param description  The description
+     * @param deathMessage The custom death message
+     * @param registeredBy The plugin creating this
+     */
+    public Affliction(String key, String display, List<String> triggers, String description, String deathMessage, Plugin registeredBy) {
+        this.key = key;
+        this.display = display;
+        this.triggers = triggers;
+        this.description = description;
+        this.deathMessage = deathMessage;
+        this.registeredBy = registeredBy;
+    }
+
+    /**
+     * Create a new Affliction object without an action (must use #setAfflictionAction)
+     *
+     * @param key          The key
+     * @param display      The display
+     * @param triggers     The triggers
+     * @param description  The description
+     * @param registeredBy The plugin creating this
+     */
+    public Affliction(String key, String display, List<String> triggers, String description, Plugin registeredBy) {
+        this.key = key;
+        this.display = display;
+        this.triggers = triggers;
+        this.description = description;
+        this.registeredBy = registeredBy;
+    }
+
+    /**
+     * Create a new Affliction object
+     *
+     * @param key          The key
+     * @param display      The display
+     * @param triggers     The triggers
+     * @param registeredBy The plugin creating this
+     */
+    public Affliction(String key, String display, List<String> triggers, Plugin registeredBy) {
+        this.key = key;
+        this.display = display;
+        this.triggers = triggers;
+        this.registeredBy = registeredBy;
+    }
+
+    /**
+     * Set this afflictions action
+     *
+     * @param action The action/payload to trigger on the target
+     */
+    public void setAfflictionAction(Consumer<Player> action) {
+        this.afflictionAction = action;
     }
 
     /**
