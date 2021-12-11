@@ -3,8 +3,10 @@ package com.github.steeldev.deathnote.managers;
 import com.github.steeldev.deathnote.api.Affliction;
 import com.github.steeldev.deathnote.util.Message;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -12,6 +14,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.github.steeldev.deathnote.api.AfflictionManager.*;
@@ -93,36 +96,34 @@ public class PluginAfflictions {
         if (getMain().config.POISON_AFFLICTION_ENABLED) {
             register(new Affliction("poison",
                     "&2Poison",
-                    Arrays.asList("poison"),
+                    Collections.singletonList("poison"),
                     "The target will get poisoned until they die.",
                     "was poisoned to death",
                     getMain(),
-                    player -> {
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                if (!player.hasPotionEffect(PotionEffectType.POISON))
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 9999, 255));
+                    player -> new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (!player.hasPotionEffect(PotionEffectType.POISON))
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 9999, 255));
 
-                                if (player.getHealth() <= 2)
-                                    player.damage(1);
+                            if (player.getHealth() <= 2)
+                                player.damage(1);
 
-                                if (player.isDead())
-                                    this.cancel();
-                            }
-                        }.runTaskTimer(getMain(), 20, 20);
-                    }));
+                            if (player.isDead())
+                                this.cancel();
+                        }
+                    }.runTaskTimer(getMain(), 20, 20)));
         } else unregister("poison");
 
         if (getMain().config.VOID_AFFLICTION_ENABLED) {
             register(new Affliction("void", "&8Void",
-                    Arrays.asList("void"),
+                    Collections.singletonList("void"),
                     "The target will be teleported into the void.",
                     "fell out of the world",
                     getMain(),
                     player -> {
                         Location loc = player.getLocation();
-                        loc.setY(-60);
+                        loc.setY(-80);
                         player.teleport(loc);
                     }));
         } else unregister("void");
@@ -134,26 +135,24 @@ public class PluginAfflictions {
                     "The target will have creepers spawned on them until they die.",
                     "was blown up by creepers",
                     getMain(),
-                    player -> {
-                        new BukkitRunnable() {
-                            List<LivingEntity> creeperList = new ArrayList<>();
+                    player -> new BukkitRunnable() {
+                        final List<LivingEntity> creeperList = new ArrayList<>();
 
-                            @Override
-                            public void run() {
-                                Creeper creeper = (Creeper) player.getWorld().spawnEntity(player.getLocation(), EntityType.CREEPER);
-                                creeper.setFuseTicks(3);
-                                creeper.setInvulnerable(true);
-                                creeper.ignite();
-                                creeperList.add(creeper);
-                                if (player.isDead()) {
-                                    for (LivingEntity creep : creeperList) {
-                                        creep.remove();
-                                    }
-                                    this.cancel();
+                        @Override
+                        public void run() {
+                            Creeper creeper = (Creeper) player.getWorld().spawnEntity(player.getLocation(), EntityType.CREEPER);
+                            creeper.setFuseTicks(3);
+                            creeper.setInvulnerable(true);
+                            creeper.ignite();
+                            creeperList.add(creeper);
+                            if (player.isDead()) {
+                                for (LivingEntity creep : creeperList) {
+                                    creep.remove();
                                 }
+                                this.cancel();
                             }
-                        }.runTaskTimer(getMain(), 20, 40);
-                    }));
+                        }
+                    }.runTaskTimer(getMain(), 20, 40)));
         } else unregister("creeper");
 
         if (getMain().config.FALLING_AFFLICTION_ENABLED) {
@@ -183,25 +182,23 @@ public class PluginAfflictions {
                     "The target will have arrows fall onto them until they die.",
                     "died to a rain of arrows",
                     getMain(),
-                    player -> {
-                        new BukkitRunnable() {
-                            List<Entity> arrowList = new ArrayList<>();
+                    player -> new BukkitRunnable() {
+                        final List<Entity> arrowList = new ArrayList<>();
 
-                            @Override
-                            public void run() {
-                                Location arrowSpawn = player.getLocation().add(0, 10, 0);
-                                Arrow arrow = (Arrow) player.getWorld().spawnEntity(arrowSpawn, EntityType.ARROW);
-                                arrow.setFallDistance(20);
-                                arrowList.add(arrow);
-                                if (player.isDead()) {
-                                    for (Entity arr : arrowList) {
-                                        arr.remove();
-                                    }
-                                    this.cancel();
+                        @Override
+                        public void run() {
+                            Location arrowSpawn = player.getLocation().add(0, 10, 0);
+                            Arrow arrow = (Arrow) player.getWorld().spawnEntity(arrowSpawn, EntityType.ARROW);
+                            arrow.setFallDistance(20);
+                            arrowList.add(arrow);
+                            if (player.isDead()) {
+                                for (Entity arr : arrowList) {
+                                    arr.remove();
                                 }
+                                this.cancel();
                             }
-                        }.runTaskTimer(getMain(), 10, 10);
-                    }));
+                        }
+                    }.runTaskTimer(getMain(), 10, 10)));
         } else unregister("arrows");
 
         if (getMain().config.ANVIL_AFFLICTION_ENABLED) {
@@ -211,17 +208,15 @@ public class PluginAfflictions {
                     "The target will have anvils fall onto them until they die.",
                     "was squashed by an anvil",
                     getMain(),
-                    player -> {
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                Location anvilSpawn = player.getLocation().add(0, 10, 0);
-                                player.getWorld().getBlockAt(anvilSpawn).setType(Material.ANVIL);
-                                if (player.isDead())
-                                    this.cancel();
-                            }
-                        }.runTaskTimer(getMain(), 20, 20);
-                    }));
+                    player -> new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            Location anvilSpawn = player.getLocation().add(0, 10, 0);
+                            player.getWorld().getBlockAt(anvilSpawn).setType(Material.ANVIL);
+                            if (player.isDead())
+                                this.cancel();
+                        }
+                    }.runTaskTimer(getMain(), 20, 20)));
         } else unregister("anvil");
 
         if (getMain().config.SUFFOCATION_AFFLICTION_ENABLED) {
@@ -263,38 +258,36 @@ public class PluginAfflictions {
                     "The target will be crushed by cows.",
                     "was squashed by cows",
                     getMain(),
-                    player -> {
-                        new BukkitRunnable() {
-                            List<Entity> cowList = new ArrayList<>();
+                    player -> new BukkitRunnable() {
+                        final List<Entity> cowList = new ArrayList<>();
 
-                            @Override
-                            public void run() {
-                                Location cowSpawn = player.getLocation().add(0, 10, 0);
-                                Cow cow = (Cow) player.getWorld().spawnEntity(cowSpawn, EntityType.COW);
-                                cowList.add(cow);
-                                new BukkitRunnable() {
-                                    @Override
-                                    public void run() {
-                                        if (!player.isDead()) {
-                                            cow.setInvulnerable(true);
-                                            player.damage(6);
-                                        } else this.cancel();
-                                    }
-                                }.runTaskLater(getMain(), 20);
-                                if (player.isDead()) {
-                                    for (Entity c : cowList) {
-                                        c.remove();
-                                    }
-                                    this.cancel();
+                        @Override
+                        public void run() {
+                            Location cowSpawn = player.getLocation().add(0, 10, 0);
+                            Cow cow = (Cow) player.getWorld().spawnEntity(cowSpawn, EntityType.COW);
+                            cowList.add(cow);
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    if (!player.isDead()) {
+                                        cow.setInvulnerable(true);
+                                        player.damage(6);
+                                    } else this.cancel();
                                 }
+                            }.runTaskLater(getMain(), 20);
+                            if (player.isDead()) {
+                                for (Entity c : cowList) {
+                                    c.remove();
+                                }
+                                this.cancel();
                             }
-                        }.runTaskTimer(getMain(), 20, 20);
-                    }));
+                        }
+                    }.runTaskTimer(getMain(), 20, 20)));
         } else unregister("cow");
 
         if (getMain().config.LAVA_AFFLICTION_ENABLED) {
             register(new Affliction("lava", "&4Lava",
-                    Arrays.asList("lava"),
+                    Collections.singletonList("lava"),
                     "The target will burn in lava.",
                     "burned to death in lava",
                     getMain(),
@@ -333,7 +326,7 @@ public class PluginAfflictions {
                     }));
         } else unregister("pig");
 
-        if (getMain().config.ARCHANGELS_FURY_AFFLICTIONS_ENABLED) {
+        if (getMain().config.ARCHANGELS_FURY_AFFLICTION_ENABLED) {
             register(new Affliction("archangels_fury",
                     "&bArchangels Fury",
                     Arrays.asList("archangels fury", "archangels smite", "archangels wrath"),
@@ -401,6 +394,120 @@ public class PluginAfflictions {
                         }.runTaskLater(getMain(), 150);
                     }));
         } else unregister("archangels_fury");
+
+        if (getMain().config.NAIR_AFFLICTION_ENABLED) {
+            register(new Affliction("nair",
+                    "&fNair",
+                    Arrays.asList("nair", "nair burn", "nair on nuts"),
+                    "The target will burn slowly by nair.",
+                    "was burned alive by nair",
+                    getMain(),
+                    player -> {
+                        World world = player.getWorld();
+                        player.setFireTicks(99999);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 9999, 255, true, false, false));
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                player.setFireTicks(99999);
+                                player.damage(1);
+                                Block block = world.getBlockAt(player.getLocation());
+                                if (block.getType().equals(Material.WATER))
+                                    block.setType(Material.AIR);
+                                if (player.isDead())
+                                    this.cancel();
+                            }
+                        }.runTaskTimer(getMain(), 10, 30);
+                    }));
+        } else unregister("nair");
+
+        if (getMain().config.BEES_AFFLICTION_ENABLED) {
+            register(new Affliction("bees",
+                    "&6Bees",
+                    Arrays.asList("bees", "bee", "bee attack", "bee swarm"),
+                    "The target will get attacked by bees. #SaveTheBees!",
+                    "was killed by a swarm of bees. #SaveTheBees!",
+                    getMain(),
+                    player -> {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                player.getWorld().spawnEntity(player.getLocation().add(0, 2, 0), EntityType.BEE, CreatureSpawnEvent.SpawnReason.CUSTOM, beeEnt -> {
+                                    Bee bee = (Bee) beeEnt;
+                                    bee.setInvulnerable(true);
+                                    new BukkitRunnable() {
+                                        @Override
+                                        public void run() {
+                                            bee.setAnger(9999);
+                                            bee.setTarget(player);
+                                            bee.setHasStung(false);
+
+                                            bee.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(0.5);
+                                            bee.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.5);
+
+                                            if (player.isDead()) {
+                                                bee.remove();
+                                                this.cancel();
+                                            }
+                                        }
+                                    }.runTaskTimer(getMain(), 10, 5);
+                                });
+                                if (player.isDead()) {
+                                    this.cancel();
+                                }
+                            }
+                        }.runTaskTimer(getMain(), 10, 20);
+                    }));
+        } else unregister("bees");
+
+        if (getMain().config.FANGS_AFFLICTION_ENABLED) {
+            register(new Affliction("fangs",
+                    "&5Fangs",
+                    Arrays.asList("fangs", "evoker fangs", "fang"),
+                    "The target will get eaten alive by evoker fangs.",
+                    "was eaten alive by evoker fangs.",
+                    getMain(),
+                    player -> {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 999999, 2));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 999999, 255));
+                        player.setFoodLevel(3);
+                        new BukkitRunnable() {
+                            int tick = 0;
+                            float radius = 5f;
+                            float radPerSec = 3f;
+                            float radPerTick = radPerSec / 20f;
+
+                            @Override
+                            public void run() {
+                                if (!player.isDead()) {
+                                    tick++;
+                                    if (radius > 1 && tick < 300) {
+                                        Location center = player.getLocation();
+                                        radPerSec += 0.05f;
+                                        radius -= 0.03f;
+                                        if (radPerSec >= 8)
+                                            radPerSec = 8f;
+                                        radPerTick = radPerSec / 20f;
+                                        Location loc = getLocationAroundCircle(center, radius, radPerTick * tick);
+                                        player.getWorld().spawnEntity(loc, EntityType.EVOKER_FANGS);
+                                    }
+                                    if (radius <= 1 && tick < 300) {
+                                        radius = 5f;
+                                        player.damage(4);
+                                        player.setNoDamageTicks(0);
+                                        player.getWorld().spawnEntity(player.getLocation(), EntityType.EVOKER_FANGS);
+                                    }
+                                    if (tick >= 300) {
+                                        tick = 0;
+                                        radPerSec = 3f;
+                                        radPerTick = radPerSec / 20f;
+                                    }
+                                } else this.cancel();
+                            }
+                        }.runTaskTimer(getMain(), 0, 1);
+                    }));
+        } else unregister("fangs");
+
         Message.DEFAULTS_REGISTERED.log();
     }
 }

@@ -24,6 +24,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -116,6 +118,12 @@ public class DeathNoteListener implements Listener {
                 else
                     Message.TARGET_WILL_BE_AFFLICTED.send(player, true, target.getName());
             }
+
+            if (time < 31 && !getMain().config.INSTANT_TRIGGER) {
+                if (getMain().config.DEBUG)
+                    Util.log("[DEBUG] Instant trigger disabled & custom time not inputted by user, setting initial delay to 40 seconds.");
+                time = Timespan.parse("40 seconds");
+            }
         }
 
         Affliction finalInputtedAffliction = inputtedAffliction;
@@ -124,6 +132,49 @@ public class DeathNoteListener implements Listener {
         if (afflictionTriggeredEvent.isCancelled()) {
             Message.TARGET_CANT_BE_AFFLICTED.send(player, true);
             return;
+        }
+        ItemStack item = player.getInventory().getItemInMainHand().clone();
+        ItemMeta itemMeta = item.getItemMeta();
+        if (!item.getType().equals(Material.AIR) && itemMeta != null) {
+            List<String> bookLore = itemMeta.getLore();
+            if (getMain().config.BOOK_MAX_USES > 0) {
+                int curUses = itemMeta.getPersistentDataContainer().getOrDefault(bookUsesKey, PersistentDataType.INTEGER, 0);
+                curUses++;
+                itemMeta.getPersistentDataContainer().set(bookUsesKey, PersistentDataType.INTEGER, curUses);
+                if (bookLore.size() < 5) {
+                    bookLore.add("");
+                    bookLore.add(colorize(String.format("&e%d&7/&e%d &7Uses", curUses, getMain().config.BOOK_MAX_USES)));
+                } else
+                    bookLore.set(5, colorize(String.format("&e%d&7/&e%d &7Uses", curUses, getMain().config.BOOK_MAX_USES)));
+                itemMeta.setLore(bookLore);
+                item.setItemMeta(itemMeta);
+
+                int finalCurUses = curUses;
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (finalCurUses >= getMain().config.BOOK_MAX_USES) {
+                            Message.DEATH_NOTE_USED_UP.send(player, true);
+                            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                            player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 0.7f);
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, (int) Timespan.parse("5 seconds"), 1));
+                        } else player.getInventory().setItemInMainHand(item);
+                    }
+                }.runTaskLater(getMain(), 4);
+            } else {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (bookLore.size() > 3) {
+                            bookLore.remove(5);
+                            bookLore.remove(4);
+                            itemMeta.setLore(bookLore);
+                            item.setItemMeta(itemMeta);
+                            player.getInventory().setItemInMainHand(item);
+                        }
+                    }
+                }.runTaskLater(getMain(), 4);
+            }
         }
 
         if (getMain().config.DEBUG)

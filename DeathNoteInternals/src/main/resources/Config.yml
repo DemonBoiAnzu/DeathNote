@@ -6,6 +6,17 @@ Prefix: '&7DeathNote &8» '
 #   a development option, put here for ease of development.
 Debug: false
 
+# Should the book have limited uses?
+#  Upon hitting the cap, the book will be consumed.
+#  Set to 0 to disable
+BookUses: 0
+
+# Should a recipe be registered to make the book craftable? (requires restart)
+CraftingRecipe: false
+
+# Should afflictions be triggered instantly or with a 40 second delay (true to the anime)
+Instant: true
+
 # Should the plugin track kills with the Death Note in a local database?
 TrackKills: true
 
@@ -32,3 +43,6 @@ Afflictions:
   Lava: true
   Pig: true
   ArchangelsFury: true
+  Nair: true
+  Fangs: true
+  Bees: true

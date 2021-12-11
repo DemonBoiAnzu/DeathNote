@@ -5,7 +5,7 @@
     <parent>
         <artifactId>DeathNote</artifactId>
         <groupId>com.github.steeldev.deathnote</groupId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -41,6 +41,8 @@
                             <version>6.1.0</version>
                         </path>
                     </annotationProcessorPaths>
+                    <source>15</source>
+                    <target>15</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -57,6 +59,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <outputFile>../server/plugins/DeathNote-${project.version}.jar</outputFile>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
@@ -90,17 +93,17 @@
         <dependency>
             <groupId>xyz.upperlevel.spigot.book</groupId>
             <artifactId>spigot-book-api</artifactId>
-            <version>1.5</version>
+            <version>1.6</version>
         </dependency>
         <dependency>
             <groupId>dev.jorel.CommandAPI</groupId>
             <artifactId>commandapi-shade</artifactId>
-            <version>6.1.0</version>
+            <version>6.5.3</version>
         </dependency>
         <dependency>
             <groupId>dev.jorel.CommandAPI</groupId>
             <artifactId>commandapi-annotations</artifactId>
-            <version>6.1.0</version>
+            <version>6.5.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -110,7 +113,7 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.steeldev.deathnote</groupId>
+            <groupId>com.github.Steel-Dev.DeathNote</groupId>
             <artifactId>DeathNoteAPI</artifactId>
             <version>1.1.0</version>
         </dependency>

@@ -18,6 +18,12 @@ public class Config {
     public boolean NEW_UPDATE_MESSAGE_ON_RELOAD;
     public boolean TRACK_KILLS;
 
+    public int BOOK_MAX_USES;
+
+    public boolean BOOK_CRAFTING_RECIPE_ENABLED;
+
+    public boolean INSTANT_TRIGGER;
+
     public boolean RANDOM_AFFLICTION_ENABLED;
     public boolean EXPLOSION_AFFLICTION_ENABLED;
     public boolean LIGHTNING_AFFLICTION_ENABLED;
@@ -33,7 +39,10 @@ public class Config {
     public boolean COW_AFFLICTION_ENABLED;
     public boolean LAVA_AFFLICTION_ENABLED;
     public boolean PIG_AFFLICTION_ENABLED;
-    public boolean ARCHANGELS_FURY_AFFLICTIONS_ENABLED;
+    public boolean ARCHANGELS_FURY_AFFLICTION_ENABLED;
+    public boolean NAIR_AFFLICTION_ENABLED;
+    public boolean FANGS_AFFLICTION_ENABLED;
+    public boolean BEES_AFFLICTION_ENABLED;
 
 
     private FileConfiguration config;
@@ -100,6 +109,13 @@ public class Config {
         PREFIX = config.getString("Prefix");
         DEBUG = config.getBoolean("Debug");
         TRACK_KILLS = config.getBoolean("TrackKills");
+
+        BOOK_MAX_USES = config.getInt("BookUses");
+
+        BOOK_CRAFTING_RECIPE_ENABLED = config.getBoolean("CraftingRecipe");
+
+        INSTANT_TRIGGER = config.getBoolean("Instant");
+
         NEW_UPDATE_MESSAGE_ON_JOIN = config.getBoolean("UpdateCheck.MessageOnJoin");
         NEW_UPDATE_MESSAGE_ON_RELOAD = config.getBoolean("UpdateCheck.MessageOnReload");
 
@@ -118,6 +134,9 @@ public class Config {
         COW_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Cow");
         LAVA_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Lava");
         PIG_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Pig");
-        ARCHANGELS_FURY_AFFLICTIONS_ENABLED = config.getBoolean("Afflictions.ArchangelsFury");
+        ARCHANGELS_FURY_AFFLICTION_ENABLED = config.getBoolean("Afflictions.ArchangelsFury");
+        NAIR_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Nair");
+        FANGS_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Fangs");
+        BEES_AFFLICTION_ENABLED = config.getBoolean("Afflictions.Bees");
     }
 }

@@ -3,10 +3,7 @@ package com.github.steeldev.deathnote.util;
 import com.github.steeldev.deathnote.DeathNote;
 import com.github.steeldev.deathnote.api.Affliction;
 import net.md_5.bungee.api.ChatMessageType;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -15,6 +12,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +28,7 @@ public class Util {
     public static Random rand = new Random();
     public static String[] version;
     public static NamespacedKey deathNoteKey;
+    public static NamespacedKey bookUsesKey;
     static DeathNote main = DeathNote.getInstance();
     static Map<Player, Affliction> afflicted = new HashMap<>();
 
@@ -60,6 +59,19 @@ public class Util {
 
     public static void log(String log) {
         Bukkit.getConsoleSender().sendMessage(colorize(PREFIX + log));
+    }
+
+    // Credit to : CoKoC on spigotmc for this snippet (https://www.spigotmc.org/threads/how-to-rotate-mobs-around-one-location.80498/)
+    public static Location getLocationAroundCircle(Location center, double radius, double angleInRadian) {
+        double x = center.getX() + radius * Math.cos(angleInRadian);
+        double z = center.getZ() + radius * Math.sin(angleInRadian);
+        double y = center.getY();
+
+        Location loc = new Location(center.getWorld(), x, y, z);
+        Vector difference = center.toVector().clone().subtract(loc.toVector()); // this sets the returned location's direction toward the center of the circle
+        loc.setDirection(difference);
+
+        return loc;
     }
 
     private static void send(CommandSender receiver, String format, Object... objects) {

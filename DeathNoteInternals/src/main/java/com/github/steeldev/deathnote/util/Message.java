@@ -54,6 +54,7 @@ public class Message {
 
 
     public static final Message NO_PERMISSION = get("dont_have_permissions");
+    public static final Message DEATH_NOTE_USED_UP = get("death_note_used_up");
 
     public static final Message ONLY_PLAYERS_CAN_EXECUTE = get("only_player_can_execute");
 
