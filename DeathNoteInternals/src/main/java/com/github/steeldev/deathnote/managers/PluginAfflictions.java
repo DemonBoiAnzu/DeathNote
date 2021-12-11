@@ -3,8 +3,10 @@ package com.github.steeldev.deathnote.managers;
 import com.github.steeldev.deathnote.api.Affliction;
 import com.github.steeldev.deathnote.util.Message;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -121,7 +123,7 @@ public class PluginAfflictions {
                     getMain(),
                     player -> {
                         Location loc = player.getLocation();
-                        loc.setY(-60);
+                        loc.setY(-80);
                         player.teleport(loc);
                     }));
         } else unregister("void");
@@ -418,6 +420,93 @@ public class PluginAfflictions {
                         }.runTaskTimer(getMain(), 10, 30);
                     }));
         } else unregister("nair");
+
+        if (getMain().config.BEES_AFFLICTION_ENABLED) {
+            register(new Affliction("bees",
+                    "&6Bees",
+                    Arrays.asList("bees", "bee", "bee attack", "bee swarm"),
+                    "The target will get attacked by bees. #SaveTheBees!",
+                    "was killed by a swarm of bees. #SaveTheBees!",
+                    getMain(),
+                    player -> {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                player.getWorld().spawnEntity(player.getLocation().add(0, 2, 0), EntityType.BEE, CreatureSpawnEvent.SpawnReason.CUSTOM, beeEnt -> {
+                                    Bee bee = (Bee) beeEnt;
+                                    bee.setInvulnerable(true);
+                                    new BukkitRunnable() {
+                                        @Override
+                                        public void run() {
+                                            bee.setAnger(9999);
+                                            bee.setTarget(player);
+                                            bee.setHasStung(false);
+
+                                            bee.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(0.5);
+                                            bee.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.5);
+
+                                            if (player.isDead()) {
+                                                bee.remove();
+                                                this.cancel();
+                                            }
+                                        }
+                                    }.runTaskTimer(getMain(), 10, 5);
+                                });
+                                if (player.isDead()) {
+                                    this.cancel();
+                                }
+                            }
+                        }.runTaskTimer(getMain(), 10, 20);
+                    }));
+        } else unregister("bees");
+
+        if (getMain().config.FANGS_AFFLICTION_ENABLED) {
+            register(new Affliction("fangs",
+                    "&5Fangs",
+                    Arrays.asList("fangs", "evoker fangs", "fang"),
+                    "The target will get eaten alive by evoker fangs.",
+                    "was eaten alive by evoker fangs.",
+                    getMain(),
+                    player -> {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 999999, 2));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 999999, 255));
+                        player.setFoodLevel(3);
+                        new BukkitRunnable() {
+                            int tick = 0;
+                            float radius = 5f;
+                            float radPerSec = 3f;
+                            float radPerTick = radPerSec / 20f;
+
+                            @Override
+                            public void run() {
+                                if (!player.isDead()) {
+                                    tick++;
+                                    if (radius > 1 && tick < 300) {
+                                        Location center = player.getLocation();
+                                        radPerSec += 0.05f;
+                                        radius -= 0.03f;
+                                        if (radPerSec >= 8)
+                                            radPerSec = 8f;
+                                        radPerTick = radPerSec / 20f;
+                                        Location loc = getLocationAroundCircle(center, radius, radPerTick * tick);
+                                        player.getWorld().spawnEntity(loc, EntityType.EVOKER_FANGS);
+                                    }
+                                    if (radius <= 1 && tick < 300) {
+                                        radius = 5f;
+                                        player.damage(4);
+                                        player.setNoDamageTicks(0);
+                                        player.getWorld().spawnEntity(player.getLocation(), EntityType.EVOKER_FANGS);
+                                    }
+                                    if (tick >= 300) {
+                                        tick = 0;
+                                        radPerSec = 3f;
+                                        radPerTick = radPerSec / 20f;
+                                    }
+                                } else this.cancel();
+                            }
+                        }.runTaskTimer(getMain(), 0, 1);
+                    }));
+        } else unregister("fangs");
 
         Message.DEFAULTS_REGISTERED.log();
     }

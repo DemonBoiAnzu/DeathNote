@@ -15,9 +15,11 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -86,6 +88,15 @@ public class DeathNote extends JavaPlugin {
         createDeathNoteItem();
         PluginAfflictions.registerPluginAfflictions();
 
+        if (config.BOOK_CRAFTING_RECIPE_ENABLED) {
+            ShapedRecipe bookRecipe = new ShapedRecipe(new NamespacedKey(this, "death_note"), deathNoteItem);
+            bookRecipe.shape(" R ", "RWR", " R ");
+            bookRecipe.setIngredient('R', Material.REDSTONE);
+            bookRecipe.setIngredient('W', Material.WRITABLE_BOOK);
+            Bukkit.addRecipe(bookRecipe);
+            Util.log("&aRegistered recipe for the Death Note.");
+        }
+
         enableMetrics();
 
         Message.PLUGIN_ENABLED.log(getDescription().getVersion(), (float) (System.currentTimeMillis() - start) / 1000);
@@ -112,6 +123,7 @@ public class DeathNote extends JavaPlugin {
 
     void createDeathNoteItem() {
         Util.deathNoteKey = new NamespacedKey(getMain(), "item_type");
+        Util.bookUsesKey = new NamespacedKey(getMain(), "book_uses");
         String deathNoteDisplayName = "<#443c3c>Death Note";
         List<String> deathNoteLore = new ArrayList<String>() {
             {
@@ -119,6 +131,10 @@ public class DeathNote extends JavaPlugin {
                 add("");
                 add("&7RMB &c: &7Use Note");
                 add("&7Crouch-RMB &c: &7View Afflictions & How to");
+                if (config.BOOK_MAX_USES > 0) {
+                    add("");
+                    add(String.format("&e0&7/&e%d &7Uses", config.BOOK_MAX_USES));
+                }
             }
         };
         ItemStack deathNote = new ItemStack(Material.WRITABLE_BOOK);
@@ -131,6 +147,7 @@ public class DeathNote extends JavaPlugin {
         meta.setDisplayName(colorize(deathNoteDisplayName));
         meta.setCustomModelData(1);
         meta.getPersistentDataContainer().set(Util.deathNoteKey, PersistentDataType.STRING, "death_note");
+        meta.getPersistentDataContainer().set(Util.bookUsesKey, PersistentDataType.INTEGER, 0);
         deathNote.setItemMeta(meta);
         deathNoteItem = deathNote;
     }
@@ -170,7 +187,7 @@ public class DeathNote extends JavaPlugin {
             int number = (curPage < 1) ? 1 : (pageSize * curPage) + 1;
             TextComponent pageComp = new TextComponent("");
             for (Affliction affliction : pageAfflictions) {
-                TextComponent afflictionComp = new TextComponent(colorize("&0" + number + " &8| &r" + affliction.getDisplay() + "\n"));
+                TextComponent afflictionComp = new TextComponent(colorize("&0" + number + " &8| &r" + ChatColor.stripColor(colorize(affliction.getDisplay())) + "\n"));
 
                 StringBuilder hoverT = new StringBuilder(affliction.getDisplay() + "\n&7Triggers &8| &r" + affliction.getTriggers());
                 if (!affliction.getDescription().isEmpty())
