@@ -67,11 +67,11 @@ public class DeathNote extends JavaPlugin {
         CommandAPI.onEnable(this);
         CommandAPI.registerCommand(MainCommand.class);
 
-        if (!Util.isRunningMinecraft(1, 16)) {
+        /*if (!Util.isRunningMinecraft(1, 16)) {
             Util.log("&c&l[&4&lERROR&c&l] Unsupported server version. Death Note only supports 1.16+");
             getServer().getPluginManager().disablePlugin(this);
             return;
-        }
+        }*/
 
         try {
             if (!Files.exists(getDataFolder().toPath()))

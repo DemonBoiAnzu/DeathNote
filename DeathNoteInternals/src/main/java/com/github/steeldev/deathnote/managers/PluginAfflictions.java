@@ -6,7 +6,6 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -429,29 +428,28 @@ public class PluginAfflictions {
                     "was killed by a swarm of bees. #SaveTheBees!",
                     getMain(),
                     player -> {
+                        World world = player.getWorld();
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                player.getWorld().spawnEntity(player.getLocation().add(0, 2, 0), EntityType.BEE, CreatureSpawnEvent.SpawnReason.CUSTOM, beeEnt -> {
-                                    Bee bee = (Bee) beeEnt;
-                                    bee.setInvulnerable(true);
-                                    new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-                                            bee.setAnger(9999);
-                                            bee.setTarget(player);
-                                            bee.setHasStung(false);
+                                var bee = (Bee) world.spawnEntity(player.getLocation().add(0, 2, 0), EntityType.BEE);
+                                bee.setInvulnerable(true);
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        bee.setAnger(9999);
+                                        bee.setTarget(player);
+                                        bee.setHasStung(false);
 
-                                            bee.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(0.5);
-                                            bee.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.5);
+                                        bee.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(0.5);
+                                        bee.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.5);
 
-                                            if (player.isDead()) {
-                                                bee.remove();
-                                                this.cancel();
-                                            }
+                                        if (player.isDead()) {
+                                            bee.remove();
+                                            this.cancel();
                                         }
-                                    }.runTaskTimer(getMain(), 10, 5);
-                                });
+                                    }
+                                }.runTaskTimer(getMain(), 10, 5);
                                 if (player.isDead()) {
                                     this.cancel();
                                 }
