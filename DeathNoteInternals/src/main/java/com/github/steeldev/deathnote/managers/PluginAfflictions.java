@@ -28,7 +28,7 @@ public class PluginAfflictions {
                 "The target will have a heart attack and die instantly.",
                 "had a heart attack",
                 getMain(),
-                player -> player.damage(player.getHealth()));
+                player -> player.damage(1000000000));
         setDefaultAffliction(heartAttack);
         register(heartAttack);
 
@@ -316,7 +316,7 @@ public class PluginAfflictions {
                                 new BukkitRunnable() {
                                     @Override
                                     public void run() {
-                                        pig.getWorld().createExplosion(pig.getLocation(), 10);
+                                        pig.getWorld().createExplosion(pig.getLocation(), 15);
                                         pig.remove();
                                     }
                                 }.runTaskLater(getMain(), 25);
