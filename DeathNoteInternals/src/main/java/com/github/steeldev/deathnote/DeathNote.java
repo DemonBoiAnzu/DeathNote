@@ -229,7 +229,7 @@ public class DeathNote extends JavaPlugin {
     public void enableMetrics() {
         Metrics metrics = new Metrics(this, 12275);
 
-        if (metrics.isEnabled()) {
+        if (isEnabled()) {
             Message.STARTING_METRICS.log();
         }
     }
