@@ -14,35 +14,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/dev/jorel/CommandAPI/commandapi-annotations/6.1.0/commandapi-annotations-6.1.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/dev/jorel/CommandAPI/commandapi-core/6.1.0/commandapi-core-6.1.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/net/kyori/adventure-api/4.7.0/adventure-api-4.7.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/net/kyori/adventure-key/4.7.0/adventure-key-4.7.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/net/kyori/examination-api/1.1.0/examination-api-1.1.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/checkerframework/checker-qual/3.11.0/checker-qual-3.11.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/net/kyori/examination-string/1.1.0/examination-string-1.1.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/jetbrains/annotations/20.1.0/annotations-20.1.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/com/destroystokyo/paper/paper-api/1.16.5-R0.1-SNAPSHOT/paper-api-1.16.5-R0.1-SNAPSHOT.jar" />
-          <entry name="$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-gson/4.7.0/adventure-text-serializer-gson-4.7.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-legacy/4.7.0/adventure-text-serializer-legacy-4.7.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-plain/4.7.0/adventure-text-serializer-plain-4.7.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" />
-          <entry name="$MAVEN_REPOSITORY$/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar" />
-          <entry name="$MAVEN_REPOSITORY$/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar" />
-          <entry name="$MAVEN_REPOSITORY$/junit/junit/4.10/junit-4.10.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar" />
-          <entry name="$MAVEN_REPOSITORY$/com/google/guava/guava/21.0/guava-21.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/net/md-5/bungeecord-chat/1.16-R0.4/bungeecord-chat-1.16-R0.4.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.27/snakeyaml-1.27.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/ow2/asm/asm/9.0/asm-9.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/ow2/asm/asm-commons/9.0/asm-commons-9.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/ow2/asm/asm-tree/9.0/asm-tree-9.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/ow2/asm/asm-analysis/9.0/asm-analysis-9.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/de/tr7zw/item-nbt-api-plugin/2.8.0/item-nbt-api-plugin-2.8.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/dev/jorel/CommandAPI/commandapi-preprocessor/6.1.0/commandapi-preprocessor-6.1.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/spigotmc/spigot-api/1.16.5-R0.1-SNAPSHOT/spigot-api-1.16.5-R0.1-SNAPSHOT.jar" />
+          <entry name="$MAVEN_REPOSITORY$/dev/jorel/commandapi-annotations/9.2.0/commandapi-annotations-9.2.0.jar" />
         </processorPath>
         <module name="DeathNoteInternals" />
       </profile>

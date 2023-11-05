@@ -8,6 +8,7 @@ import com.github.steeldev.deathnote.managers.PluginAfflictions;
 import com.github.steeldev.deathnote.util.*;
 import com.google.common.collect.Lists;
 import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import dev.jorel.commandapi.CommandAPIConfig;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -56,7 +57,8 @@ public class DeathNote extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        CommandAPI.onLoad(new CommandAPIConfig().silentLogs(true));
+        //CommandAPI.onLoad(new CommandAPIConfig().silentLogs(true));
+        CommandAPI.onLoad(new CommandAPIBukkitConfig(this).silentLogs(true));
     }
 
     @Override
@@ -64,7 +66,8 @@ public class DeathNote extends JavaPlugin {
         long start = System.currentTimeMillis();
         instance = this;
 
-        CommandAPI.onEnable(this);
+        //CommandAPI.onEnable(this);
+        CommandAPI.onEnable();
         CommandAPI.registerCommand(MainCommand.class);
 
         /*if (!Util.isRunningMinecraft(1, 16)) {

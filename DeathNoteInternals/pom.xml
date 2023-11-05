@@ -12,6 +12,57 @@
     <artifactId>DeathNoteInternals</artifactId>
     <packaging>jar</packaging>
 
+    <repositories>
+            <repository>
+                <id>central</id>
+                <name>Maven Central</name>
+                <layout>default</layout>
+                <url>https://repo1.maven.org/maven2</url>
+                <snapshots>
+                    <enabled>false</enabled>
+                </snapshots>
+            </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>dev.jorel</groupId>
+            <artifactId>commandapi-bukkit-shade</artifactId>
+            <version>9.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.jorel</groupId>
+            <artifactId>commandapi-annotations</artifactId>
+            <version>9.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>xyz.upperlevel.spigot.book</groupId>
+            <artifactId>spigot-book-api</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.Steel-Dev.DeathNote</groupId>
+            <artifactId>DeathNoteAPI</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <finalName>DeathNote-${project.version}</finalName>
@@ -36,19 +87,18 @@
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
-                            <groupId>dev.jorel.CommandAPI</groupId>
+                            <groupId>dev.jorel</groupId>
                             <artifactId>commandapi-annotations</artifactId>
-                            <version>8.7.6</version>
+                            <version>9.2.0</version>
                         </path>
                     </annotationProcessorPaths>
-                    <source>15</source>
-                    <target>15</target>
+                    <release>17</release>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <id>shade</id>
@@ -60,6 +110,8 @@
                 </executions>
                 <configuration>
                     <outputFile>../server/plugins/DeathNote-${project.version}.jar</outputFile>
+                    <minimizeJar>true</minimizeJar>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
@@ -69,53 +121,12 @@
                             <shadedPattern>com.github.steeldev.deathnote.api</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>dev.jorel.commandapi-shade</pattern>
+                            <pattern>dev.jorel.commandapi</pattern>
+                            <shadedPattern>io.github.jorelali.commandapi</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>codemc-repo</id>
-            <url>https://repo.codemc.org/repository/maven-public/</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>xyz.upperlevel.spigot.book</groupId>
-            <artifactId>spigot-book-api</artifactId>
-            <version>1.6</version>
-        </dependency>
-        <dependency>
-            <groupId>dev.jorel.CommandAPI</groupId>
-            <artifactId>commandapi-shade</artifactId>
-            <version>8.7.6</version>
-        </dependency>
-        <dependency>
-            <groupId>dev.jorel.CommandAPI</groupId>
-            <artifactId>commandapi-annotations</artifactId>
-            <version>8.7.6</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.Steel-Dev.DeathNote</groupId>
-            <artifactId>DeathNoteAPI</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-    </dependencies>
 </project>
